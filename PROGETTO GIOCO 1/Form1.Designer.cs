@@ -30,84 +30,104 @@
         {
             this.components = new System.ComponentModel.Container();
             this.ptbPersonaggio = new System.Windows.Forms.PictureBox();
-            this.tmrGravità = new System.Windows.Forms.Timer(this.components);
-            this.ptbTerreno = new System.Windows.Forms.PictureBox();
-            this.tmrSalto = new System.Windows.Forms.Timer(this.components);
-            this.tmrDestra = new System.Windows.Forms.Timer(this.components);
-            this.tmrSinistra = new System.Windows.Forms.Timer(this.components);
+            this.tmrAlto = new System.Windows.Forms.Timer(this.components);
+            this.tmrGiù = new System.Windows.Forms.Timer(this.components);
+            this.tmrColpo = new System.Windows.Forms.Timer(this.components);
+            this.lblMunizioni = new System.Windows.Forms.Label();
+            this.pictureBox1 = new System.Windows.Forms.PictureBox();
+            this.tmrNemici = new System.Windows.Forms.Timer(this.components);
+            this.tmrRicarica = new System.Windows.Forms.Timer(this.components);
             ((System.ComponentModel.ISupportInitialize)(this.ptbPersonaggio)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.ptbTerreno)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
             this.SuspendLayout();
             // 
             // ptbPersonaggio
             // 
             this.ptbPersonaggio.BackColor = System.Drawing.Color.Transparent;
             this.ptbPersonaggio.Image = global::PROGETTO_GIOCO_1.Properties.Resources.personaggio_1_png;
-            this.ptbPersonaggio.Location = new System.Drawing.Point(375, 103);
+            this.ptbPersonaggio.Location = new System.Drawing.Point(12, 160);
             this.ptbPersonaggio.Name = "ptbPersonaggio";
             this.ptbPersonaggio.Size = new System.Drawing.Size(92, 97);
             this.ptbPersonaggio.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
             this.ptbPersonaggio.TabIndex = 1;
             this.ptbPersonaggio.TabStop = false;
-            this.ptbPersonaggio.Click += new System.EventHandler(this.ptbPersonaggio_Click);
             // 
-            // tmrGravità
+            // tmrAlto
             // 
-            this.tmrGravità.Enabled = true;
-            this.tmrGravità.Interval = 10;
-            this.tmrGravità.Tick += new System.EventHandler(this.gravità);
+            this.tmrAlto.Interval = 1;
+            this.tmrAlto.Tick += new System.EventHandler(this.tmrAlto_Tick);
             // 
-            // ptbTerreno
+            // tmrGiù
             // 
-            this.ptbTerreno.BackColor = System.Drawing.Color.Lime;
-            this.ptbTerreno.Location = new System.Drawing.Point(-50, 312);
-            this.ptbTerreno.Name = "ptbTerreno";
-            this.ptbTerreno.Size = new System.Drawing.Size(1077, 77);
-            this.ptbTerreno.TabIndex = 2;
-            this.ptbTerreno.TabStop = false;
+            this.tmrGiù.Interval = 10;
+            this.tmrGiù.Tick += new System.EventHandler(this.tmrGiù_Tick);
             // 
-            // tmrSalto
+            // tmrColpo
             // 
-            this.tmrSalto.Interval = 10;
-            this.tmrSalto.Tick += new System.EventHandler(this.tmrSalto_Tick);
+            this.tmrColpo.Interval = 10;
+            this.tmrColpo.Tick += new System.EventHandler(this.tmrColpo_Tick);
             // 
-            // tmrDestra
+            // lblMunizioni
             // 
-            this.tmrDestra.Interval = 10;
-            this.tmrDestra.Tick += new System.EventHandler(this.tmrDestra_Tick);
+            this.lblMunizioni.AutoEllipsis = true;
+            this.lblMunizioni.AutoSize = true;
+            this.lblMunizioni.BackColor = System.Drawing.Color.Red;
+            this.lblMunizioni.Font = new System.Drawing.Font("Noto Sans JP Black", 24.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lblMunizioni.ForeColor = System.Drawing.Color.Black;
+            this.lblMunizioni.Location = new System.Drawing.Point(812, -2);
+            this.lblMunizioni.Name = "lblMunizioni";
+            this.lblMunizioni.Size = new System.Drawing.Size(60, 48);
+            this.lblMunizioni.TabIndex = 3;
+            this.lblMunizioni.Text = "30";
             // 
-            // tmrSinistra
+            // pictureBox1
             // 
-            this.tmrSinistra.Interval = 10;
-            this.tmrSinistra.Tick += new System.EventHandler(this.tmrSinistra_Tick);
+            this.pictureBox1.BackColor = System.Drawing.Color.Red;
+            this.pictureBox1.Location = new System.Drawing.Point(-5, -4);
+            this.pictureBox1.Name = "pictureBox1";
+            this.pictureBox1.Size = new System.Drawing.Size(915, 50);
+            this.pictureBox1.TabIndex = 4;
+            this.pictureBox1.TabStop = false;
+            // 
+            // tmrRicarica
+            // 
+            this.tmrRicarica.Interval = 1000;
+            this.tmrRicarica.Tick += new System.EventHandler(this.tmrRicarica_Tick);
             // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(128)))), ((int)(((byte)(255)))), ((int)(((byte)(255)))));
-            this.ClientSize = new System.Drawing.Size(854, 348);
-            this.Controls.Add(this.ptbTerreno);
+            this.ClientSize = new System.Drawing.Size(884, 511);
+            this.Controls.Add(this.lblMunizioni);
             this.Controls.Add(this.ptbPersonaggio);
+            this.Controls.Add(this.pictureBox1);
             this.ForeColor = System.Drawing.Color.Transparent;
+            this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
+            this.MaximizeBox = false;
             this.Name = "Form1";
+            this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent;
             this.Text = "Form1";
             this.Load += new System.EventHandler(this.Form1_Load);
             this.KeyDown += new System.Windows.Forms.KeyEventHandler(this.Form1_KeyDown);
             this.KeyUp += new System.Windows.Forms.KeyEventHandler(this.Form1_KeyUp);
             ((System.ComponentModel.ISupportInitialize)(this.ptbPersonaggio)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.ptbTerreno)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).EndInit();
             this.ResumeLayout(false);
+            this.PerformLayout();
 
         }
 
         #endregion
         private System.Windows.Forms.PictureBox ptbPersonaggio;
-        private System.Windows.Forms.Timer tmrGravità;
-        private System.Windows.Forms.PictureBox ptbTerreno;
-        private System.Windows.Forms.Timer tmrSalto;
-        private System.Windows.Forms.Timer tmrDestra;
-        private System.Windows.Forms.Timer tmrSinistra;
+        private System.Windows.Forms.Timer tmrAlto;
+        private System.Windows.Forms.Timer tmrGiù;
+        private System.Windows.Forms.Timer tmrColpo;
+        private System.Windows.Forms.Label lblMunizioni;
+        private System.Windows.Forms.PictureBox pictureBox1;
+        private System.Windows.Forms.Timer tmrNemici;
+        private System.Windows.Forms.Timer tmrRicarica;
     }
 }
 
