@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Drawing;
 using System.Windows.Forms;
 
 namespace PROGETTO_GIOCO_1
@@ -8,15 +10,22 @@ namespace PROGETTO_GIOCO_1
         public Form1()
         {
             InitializeComponent();
+            this.DoubleBuffered = true;
+            this.SetStyle(ControlStyles.OptimizedDoubleBuffer, true);
+            this.SetStyle(ControlStyles.AllPaintingInWmPaint, true);
+            this.SetStyle(ControlStyles.UserPaint, true);
+            this.UpdateStyles();
         }
 
         int velocitàPersonaggio = 10;
+
         int velocitàColpo = 5;
         int munizioni = 30;
         bool staSparando = false;
         bool staRicaricando = false;
 
         int tickCount = 0;
+        List<Control> colpiDaCancellare = new List<Control>();
         private void Form1_Load(object sender, EventArgs e)
         {
             tmrColpo.Start();
@@ -35,7 +44,8 @@ namespace PROGETTO_GIOCO_1
             }
             else if (e.KeyCode == Keys.R)
             {
-                ricarica(); 
+                lblMunizioni.Text = "5s";
+                ricarica();
 
             }
             else if (e.KeyCode == Keys.Space && !staSparando && !staRicaricando)
@@ -45,7 +55,9 @@ namespace PROGETTO_GIOCO_1
                 colpo.BackColor = System.Drawing.Color.Red;
                 colpo.Tag = "colpo";
                 colpo.Left = ptbPersonaggio.Left + ptbPersonaggio.Width/2-colpo.Width/2;
-                colpo.Top = ptbPersonaggio.Top + ptbPersonaggio.Height/2-colpo.Height/2;  
+                colpo.Top = ptbPersonaggio.Top + ptbPersonaggio.Height/2-colpo.Height/2;
+                
+
 
                 if (munizioni > 0)
                 {
@@ -86,17 +98,29 @@ namespace PROGETTO_GIOCO_1
         }
 
         private void tmrColpo_Tick(object sender, EventArgs e)
-        {            
+        {
             foreach (Control c in this.Controls)
             {
                 if (c is PictureBox && c.Tag != null && c.Tag.ToString() == "colpo")
                 {
+                    
                     c.Left += velocitàColpo;
+                    c.Invalidate(false);
                     if (c.Top < -c.Height)
                     {
                         this.Controls.Remove(c);
                         c.Dispose();
                     }
+                }
+
+                if (c.Left > this.ClientSize.Width)
+                {
+                    colpiDaCancellare.Add(c);
+                }
+                foreach (Control colpo in colpiDaCancellare)
+                {
+                    this.Controls.Remove(colpo);
+                    colpo.Dispose();
                 }
             }
         }
@@ -104,24 +128,25 @@ namespace PROGETTO_GIOCO_1
 
         private void ricarica()
         {
-            staRicaricando= true;
+            tickCount = 1;
+            staRicaricando = true;
             tmrRicarica.Start();
-            
         }
 
         private void tmrRicarica_Tick(object sender, EventArgs e)
         {
-            tickCount++;    
-            if (tickCount>5) {  
-                if (munizioni < 30 )
-                    {
-                
+
+            tickCount++;
+            if (tickCount == 6)
+            {
+                if (munizioni < 30)
+                {
+
                     munizioni = 30;
-                    
                     staRicaricando = false;
                     lblMunizioni.Text = munizioni.ToString();
                     tmrRicarica.Stop();
-                    }
+                }
             }
 
 
@@ -145,10 +170,10 @@ namespace PROGETTO_GIOCO_1
             else if (tickCount == 5)
             {
                 lblMunizioni.Text = "1s";
-                
             }
-                
-            
         }
+
+        
     }
 }
+

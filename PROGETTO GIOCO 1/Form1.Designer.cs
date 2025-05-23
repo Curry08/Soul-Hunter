@@ -45,26 +45,26 @@
             // 
             this.ptbPersonaggio.BackColor = System.Drawing.Color.Transparent;
             this.ptbPersonaggio.Image = global::PROGETTO_GIOCO_1.Properties.Resources.personaggio_1_png;
-            this.ptbPersonaggio.Location = new System.Drawing.Point(12, 160);
+            this.ptbPersonaggio.Location = new System.Drawing.Point(10, 160);
             this.ptbPersonaggio.Name = "ptbPersonaggio";
-            this.ptbPersonaggio.Size = new System.Drawing.Size(92, 97);
+            this.ptbPersonaggio.Size = new System.Drawing.Size(90, 100);
             this.ptbPersonaggio.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
             this.ptbPersonaggio.TabIndex = 1;
             this.ptbPersonaggio.TabStop = false;
             // 
             // tmrAlto
             // 
-            this.tmrAlto.Interval = 1;
+            this.tmrAlto.Interval = 15;
             this.tmrAlto.Tick += new System.EventHandler(this.tmrAlto_Tick);
             // 
             // tmrGiù
             // 
-            this.tmrGiù.Interval = 10;
+            this.tmrGiù.Interval = 15;
             this.tmrGiù.Tick += new System.EventHandler(this.tmrGiù_Tick);
             // 
             // tmrColpo
             // 
-            this.tmrColpo.Interval = 10;
+            this.tmrColpo.Interval = 15;
             this.tmrColpo.Tick += new System.EventHandler(this.tmrColpo_Tick);
             // 
             // lblMunizioni
@@ -72,17 +72,17 @@
             this.lblMunizioni.AutoEllipsis = true;
             this.lblMunizioni.AutoSize = true;
             this.lblMunizioni.BackColor = System.Drawing.Color.Red;
-            this.lblMunizioni.Font = new System.Drawing.Font("Noto Sans JP Black", 24.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lblMunizioni.Font = new System.Drawing.Font("Microsoft Sans Serif", 24.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.lblMunizioni.ForeColor = System.Drawing.Color.Black;
-            this.lblMunizioni.Location = new System.Drawing.Point(812, -2);
+            this.lblMunizioni.Location = new System.Drawing.Point(817, 8);
             this.lblMunizioni.Name = "lblMunizioni";
-            this.lblMunizioni.Size = new System.Drawing.Size(60, 48);
+            this.lblMunizioni.Size = new System.Drawing.Size(55, 38);
             this.lblMunizioni.TabIndex = 3;
             this.lblMunizioni.Text = "30";
             // 
             // pictureBox1
             // 
-            this.pictureBox1.BackColor = System.Drawing.Color.Red;
+            this.pictureBox1.BackColor = System.Drawing.Color.Transparent;
             this.pictureBox1.Location = new System.Drawing.Point(-5, -4);
             this.pictureBox1.Name = "pictureBox1";
             this.pictureBox1.Size = new System.Drawing.Size(915, 50);
@@ -99,6 +99,8 @@
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(128)))), ((int)(((byte)(255)))), ((int)(((byte)(255)))));
+            this.BackgroundImage = global::PROGETTO_GIOCO_1.Properties.Resources.Sfondo;
+            this.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
             this.ClientSize = new System.Drawing.Size(884, 511);
             this.Controls.Add(this.lblMunizioni);
             this.Controls.Add(this.ptbPersonaggio);
@@ -108,7 +110,6 @@
             this.MaximizeBox = false;
             this.Name = "Form1";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent;
-            this.Text = "Form1";
             this.Load += new System.EventHandler(this.Form1_Load);
             this.KeyDown += new System.Windows.Forms.KeyEventHandler(this.Form1_KeyDown);
             this.KeyUp += new System.Windows.Forms.KeyEventHandler(this.Form1_KeyUp);
