@@ -89,5 +89,8 @@
   <ItemGroup>
     <None Include="Resources\Sfondo.png" />
   </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\ProtagonistaFermo.png" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

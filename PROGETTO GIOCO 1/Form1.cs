@@ -17,163 +17,167 @@ namespace PROGETTO_GIOCO_1
             this.UpdateStyles();
         }
 
-        int velocitàPersonaggio = 10;
-
-        int velocitàColpo = 5;
-        int munizioni = 30;
+        bool vaSu = false;
+        bool vaGiù = false;
         bool staSparando = false;
         bool staRicaricando = false;
+        bool haSparato = false;
 
-        int tickCount = 0;
+        int Velocità = 5;
+        int VelocitàColpo = 3;
+        int Munizioni = 30;
+        int RicaricaConta = 5;
+        int ContaNemici = 0;
+        int ColpiRimastiLocation = 0;
+
         List<Control> colpiDaCancellare = new List<Control>();
+
+
         private void Form1_Load(object sender, EventArgs e)
         {
-            tmrColpo.Start();
-            
+            ColpiRimastiLocation = lblMunizioni.Left;
         }
+
 
         private void Form1_KeyDown(object sender, KeyEventArgs e)
         {
-            if (e.KeyCode == Keys.W)
-            {
-                tmrAlto.Start();
-            }
-            else if (e.KeyCode == Keys.S)
-            {
-                tmrGiù.Start();
-            }
-            else if (e.KeyCode == Keys.R)
-            {
-                lblMunizioni.Text = "5s";
-                ricarica();
+            if (e.KeyCode == Keys.W || e.KeyCode == Keys.Up)
+                vaSu = true;
 
-            }
-            else if (e.KeyCode == Keys.Space && !staSparando && !staRicaricando)
-            {
-                PictureBox colpo = new PictureBox();               
-                colpo.Size = new System.Drawing.Size(35, 10);
-                colpo.BackColor = System.Drawing.Color.Red;
-                colpo.Tag = "colpo";
-                colpo.Left = ptbPersonaggio.Left + ptbPersonaggio.Width/2-colpo.Width/2;
-                colpo.Top = ptbPersonaggio.Top + ptbPersonaggio.Height/2-colpo.Height/2;
-                
+            if (e.KeyCode == Keys.S || e.KeyCode == Keys.Down)
+                vaGiù = true;
+        }
 
 
-                if (munizioni > 0)
+        private void tmrMainGameEvents_Tick(object sender, EventArgs e)
+        {
+            if (vaSu)
+                ptbPersonaggio.Top = Math.Max(0, ptbPersonaggio.Top - Velocità);
+
+            if (vaGiù)
+                ptbPersonaggio.Top = Math.Min(this.ClientSize.Height - ptbPersonaggio.Height, ptbPersonaggio.Top + Velocità);
+
+            if (haSparato)
+            {
+                foreach (Control c in this.Controls)
                 {
-                    this.Controls.Add(colpo);
-                colpo.BringToFront();
-                munizioni--;
-                lblMunizioni.Text = munizioni.ToString();
-                    staSparando = true;
+                    if (c is PictureBox && c.Tag != null && c.Tag.ToString() == "colpo")
+                    {
+
+                        c.Left += VelocitàColpo;
+                        c.Invalidate(false);
+                        if (c.Top < -c.Height)
+                        {
+                            this.Controls.Remove(c);
+                            c.Dispose();
+                        }
+                    }
+
+                    if (c.Left > this.ClientSize.Width)
+                    {
+                        colpiDaCancellare.Add(c);
+                    }
+                    foreach (Control colpo in colpiDaCancellare)
+                    {
+                        this.Controls.Remove(colpo);
+                        colpo.Dispose();
+                    }
                 }
             }
-            
         }
+
 
         private void Form1_KeyUp(object sender, KeyEventArgs e)
         {
-            if (e.KeyCode == Keys.W )
-            {
-                tmrAlto.Stop();
-            }
-            else if (e.KeyCode == Keys.S)
-            {
-                tmrGiù.Stop();
-            }
-            else if (e.KeyCode == Keys.Space)
-            {
-                staSparando = false;
-            }
-        }
+            if (e.KeyCode == Keys.W || e.KeyCode == Keys.Up)
+                vaSu = false;
 
-        private void tmrAlto_Tick(object sender, EventArgs e)
-        {
-            ptbPersonaggio.Top = Math.Max(ptbPersonaggio.Top - velocitàPersonaggio, 50); // Limita il movimento verso l'alto
-        }
+            if (e.KeyCode == Keys.S || e.KeyCode == Keys.Down)
+                vaGiù = false;
 
-        private void tmrGiù_Tick(object sender, EventArgs e)
-        {
-            ptbPersonaggio.Top = Math.Min(ptbPersonaggio.Top + velocitàPersonaggio, 520-ptbPersonaggio.Height);
-        }
-
-        private void tmrColpo_Tick(object sender, EventArgs e)
-        {
-            foreach (Control c in this.Controls)
+            if (e.KeyCode == Keys.R && !staRicaricando)
             {
-                if (c is PictureBox && c.Tag != null && c.Tag.ToString() == "colpo")
+                if (Munizioni != 30)
                 {
-                    
-                    c.Left += velocitàColpo;
-                    c.Invalidate(false);
-                    if (c.Top < -c.Height)
+                    staRicaricando = true;
+
+                    lblAttesa.Text = "Attesa:";
+                    lblMunizioni.Text = RicaricaConta + " Secondi";
+                    lblMunizioni.Left = (lblAttesa.Left + lblAttesa.Width) - lblMunizioni.Width / 2;
+
+                    tmrAttesa.Start();
+                }
+            }
+
+            if (e.KeyCode == Keys.Space || e.KeyCode == Keys.E)
+            {
+                if (!staRicaricando && !staSparando)
+                {
+                    haSparato = true;
+                    staSparando = true;
+
+                    PictureBox colpo = new PictureBox();
+                    colpo.Size = new Size(10, 5);
+                    colpo.BackColor = Color.Red;
+                    colpo.Tag = "colpo";
+
+                    colpo.Left = ptbPersonaggio.Left + ptbPersonaggio.Width;
+                    colpo.Top = ptbPersonaggio.Top + ptbPersonaggio.Height / 2;
+
+                    if (Munizioni > 0)
                     {
-                        this.Controls.Remove(c);
-                        c.Dispose();
+
+                        Munizioni--;
+
+                        this.Controls.Add(colpo);
+                        colpo.BringToFront();
+
+                        tmrSparo.Start();
                     }
                 }
-
-                if (c.Left > this.ClientSize.Width)
-                {
-                    colpiDaCancellare.Add(c);
-                }
-                foreach (Control colpo in colpiDaCancellare)
-                {
-                    this.Controls.Remove(colpo);
-                    colpo.Dispose();
-                }
             }
         }
 
-
-        private void ricarica()
+        private void tmrAttesa_Tick(object sender, EventArgs e)
         {
-            tickCount = 1;
-            staRicaricando = true;
-            tmrRicarica.Start();
-        }
-
-        private void tmrRicarica_Tick(object sender, EventArgs e)
-        {
-
-            tickCount++;
-            if (tickCount == 6)
+            if (staRicaricando)
             {
-                if (munizioni < 30)
-                {
+                RicaricaConta--;
+                if (RicaricaConta == 1)
+                    lblMunizioni.Text = RicaricaConta + " Secondo";
+                else
+                    lblMunizioni.Text = RicaricaConta + " Secondi";
+                lblMunizioni.Refresh();
 
-                    munizioni = 30;
+
+                if (RicaricaConta == 0)
+                {
                     staRicaricando = false;
-                    lblMunizioni.Text = munizioni.ToString();
-                    tmrRicarica.Stop();
+
+                    Munizioni = 30;
+                    lblAttesa.Text = "";
+                    RicaricaConta = 5;
+                    lblMunizioni.Left = ColpiRimastiLocation;
+                    lblMunizioni.Text = Munizioni.ToString();
+
+                    tmrAttesa.Stop();
                 }
-            }
-
-
-
-            if (tickCount == 1)
-            {
-                lblMunizioni.Text = "5s";
-            }
-            else if (tickCount == 2)
-            {
-                lblMunizioni.Text = "4s";
-            }
-            else if (tickCount == 3)
-            {
-                lblMunizioni.Text = "3s";
-            }
-            else if (tickCount == 4)
-            {
-                lblMunizioni.Text = "2s";
-            }
-            else if (tickCount == 5)
-            {
-                lblMunizioni.Text = "1s";
             }
         }
 
-        
+        private void tmrSparo_Tick(object sender, EventArgs e)
+        {
+            if (staSparando)
+            {
+
+                lblAttesa.Text = "";
+                lblMunizioni.Left = ColpiRimastiLocation;
+                lblMunizioni.Text = Munizioni.ToString();
+                staSparando = false;
+
+                tmrAttesa.Stop();
+            }
+        }
     }
 }
 
