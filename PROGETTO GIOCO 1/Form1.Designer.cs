@@ -31,13 +31,16 @@
             this.components = new System.ComponentModel.Container();
             this.ptbPersonaggio = new System.Windows.Forms.PictureBox();
             this.lblMunizioni = new System.Windows.Forms.Label();
-            this.pictureBox1 = new System.Windows.Forms.PictureBox();
             this.tmrMainGameEvents = new System.Windows.Forms.Timer(this.components);
-            this.tmrSparo = new System.Windows.Forms.Timer(this.components);
-            this.tmrAttesa = new System.Windows.Forms.Timer(this.components);
+            this.tmrAttesaSparo = new System.Windows.Forms.Timer(this.components);
+            this.tmrAttesaRicarica = new System.Windows.Forms.Timer(this.components);
             this.lblAttesa = new System.Windows.Forms.Label();
+            this.ptbLimite = new System.Windows.Forms.PictureBox();
+            this.ptbElimina = new System.Windows.Forms.PictureBox();
+            this.tmrMovimentoNemico = new System.Windows.Forms.Timer(this.components);
             ((System.ComponentModel.ISupportInitialize)(this.ptbPersonaggio)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.ptbLimite)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.ptbElimina)).BeginInit();
             this.SuspendLayout();
             // 
             // ptbPersonaggio
@@ -58,20 +61,11 @@
             this.lblMunizioni.BackColor = System.Drawing.Color.Red;
             this.lblMunizioni.Font = new System.Drawing.Font("Microsoft Sans Serif", 24.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.lblMunizioni.ForeColor = System.Drawing.Color.Black;
-            this.lblMunizioni.Location = new System.Drawing.Point(798, 28);
+            this.lblMunizioni.Location = new System.Drawing.Point(498, 34);
             this.lblMunizioni.Name = "lblMunizioni";
             this.lblMunizioni.Size = new System.Drawing.Size(55, 38);
             this.lblMunizioni.TabIndex = 3;
             this.lblMunizioni.Text = "30";
-            // 
-            // pictureBox1
-            // 
-            this.pictureBox1.BackColor = System.Drawing.Color.Transparent;
-            this.pictureBox1.Location = new System.Drawing.Point(10, -9);
-            this.pictureBox1.Name = "pictureBox1";
-            this.pictureBox1.Size = new System.Drawing.Size(915, 50);
-            this.pictureBox1.TabIndex = 4;
-            this.pictureBox1.TabStop = false;
             // 
             // tmrMainGameEvents
             // 
@@ -79,25 +73,48 @@
             this.tmrMainGameEvents.Interval = 20;
             this.tmrMainGameEvents.Tick += new System.EventHandler(this.tmrMainGameEvents_Tick);
             // 
-            // tmrSparo
+            // tmrAttesaSparo
             // 
-            this.tmrSparo.Interval = 500;
-            this.tmrSparo.Tick += new System.EventHandler(this.tmrSparo_Tick);
+            this.tmrAttesaSparo.Interval = 250;
+            this.tmrAttesaSparo.Tick += new System.EventHandler(this.tmrAttesaSparo_Tick);
             // 
-            // tmrAttesa
+            // tmrAttesaRicarica
             // 
-            this.tmrAttesa.Interval = 1000;
-            this.tmrAttesa.Tick += new System.EventHandler(this.tmrAttesa_Tick);
+            this.tmrAttesaRicarica.Interval = 1000;
+            this.tmrAttesaRicarica.Tick += new System.EventHandler(this.tmrAttesaRicarica_Tick);
             // 
             // lblAttesa
             // 
             this.lblAttesa.AutoSize = true;
             this.lblAttesa.BackColor = System.Drawing.Color.Transparent;
             this.lblAttesa.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lblAttesa.Location = new System.Drawing.Point(771, 9);
+            this.lblAttesa.Location = new System.Drawing.Point(489, 9);
             this.lblAttesa.Name = "lblAttesa";
             this.lblAttesa.Size = new System.Drawing.Size(0, 16);
             this.lblAttesa.TabIndex = 5;
+            // 
+            // ptbLimite
+            // 
+            this.ptbLimite.BackColor = System.Drawing.Color.Transparent;
+            this.ptbLimite.Location = new System.Drawing.Point(0, -2);
+            this.ptbLimite.Name = "ptbLimite";
+            this.ptbLimite.Size = new System.Drawing.Size(100, 74);
+            this.ptbLimite.TabIndex = 4;
+            this.ptbLimite.TabStop = false;
+            // 
+            // ptbElimina
+            // 
+            this.ptbElimina.BackColor = System.Drawing.Color.Transparent;
+            this.ptbElimina.Location = new System.Drawing.Point(0, 65);
+            this.ptbElimina.Name = "ptbElimina";
+            this.ptbElimina.Size = new System.Drawing.Size(100, 399);
+            this.ptbElimina.TabIndex = 6;
+            this.ptbElimina.TabStop = false;
+            // 
+            // tmrMovimentoNemico
+            // 
+            this.tmrMovimentoNemico.Enabled = true;
+            this.tmrMovimentoNemico.Tick += new System.EventHandler(this.tmrMovimentoNemico_Tick);
             // 
             // Form1
             // 
@@ -106,11 +123,12 @@
             this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(128)))), ((int)(((byte)(255)))), ((int)(((byte)(255)))));
             this.BackgroundImage = global::PROGETTO_GIOCO_1.Properties.Resources.Sfondo;
             this.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
-            this.ClientSize = new System.Drawing.Size(884, 511);
+            this.ClientSize = new System.Drawing.Size(1084, 461);
             this.Controls.Add(this.lblAttesa);
             this.Controls.Add(this.lblMunizioni);
             this.Controls.Add(this.ptbPersonaggio);
-            this.Controls.Add(this.pictureBox1);
+            this.Controls.Add(this.ptbLimite);
+            this.Controls.Add(this.ptbElimina);
             this.ForeColor = System.Drawing.Color.Transparent;
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
             this.MaximizeBox = false;
@@ -119,8 +137,10 @@
             this.Load += new System.EventHandler(this.Form1_Load);
             this.KeyDown += new System.Windows.Forms.KeyEventHandler(this.Form1_KeyDown);
             this.KeyUp += new System.Windows.Forms.KeyEventHandler(this.Form1_KeyUp);
+            this.MouseClick += new System.Windows.Forms.MouseEventHandler(this.Form1_MouseClick);
             ((System.ComponentModel.ISupportInitialize)(this.ptbPersonaggio)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.ptbLimite)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.ptbElimina)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -129,11 +149,13 @@
         #endregion
         private System.Windows.Forms.PictureBox ptbPersonaggio;
         private System.Windows.Forms.Label lblMunizioni;
-        private System.Windows.Forms.PictureBox pictureBox1;
         private System.Windows.Forms.Timer tmrMainGameEvents;
-        private System.Windows.Forms.Timer tmrSparo;
-        private System.Windows.Forms.Timer tmrAttesa;
+        private System.Windows.Forms.Timer tmrAttesaSparo;
+        private System.Windows.Forms.Timer tmrAttesaRicarica;
         private System.Windows.Forms.Label lblAttesa;
+        private System.Windows.Forms.PictureBox ptbLimite;
+        private System.Windows.Forms.PictureBox ptbElimina;
+        private System.Windows.Forms.Timer tmrMovimentoNemico;
     }
 }
 

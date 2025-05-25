@@ -22,20 +22,37 @@ namespace PROGETTO_GIOCO_1
         bool staSparando = false;
         bool staRicaricando = false;
         bool haSparato = false;
+        bool GameOver = false;
 
-        int Velocità = 5;
+        int VelocitàPersonaggio = 5;
+        int VelocitàNemico = 2;
         int VelocitàColpo = 3;
         int Munizioni = 30;
         int RicaricaConta = 5;
-        int ContaNemici = 0;
         int ColpiRimastiLocation = 0;
+        int ContaNemiciRimasti = 10;
+        int VitaPersonaggio = 10;
 
-        List<Control> colpiDaCancellare = new List<Control>();
+        Random GenNemici = new Random();
+
+        List<Control> Colpi = new List<Control>();
+        List<PictureBox> Nemici = new List<PictureBox>();
 
 
         private void Form1_Load(object sender, EventArgs e)
         {
             ColpiRimastiLocation = lblMunizioni.Left;
+
+            for (int i = 0; i < 10; i++)
+            {
+                PictureBox nemico = new PictureBox();
+                nemico.Size = new Size(60, 60);
+                nemico.BackColor = Color.Green;
+                nemico.Location = new Point(GenNemici.Next(this.ClientSize.Width + nemico.Width, this.ClientSize.Width + 80), GenNemici.Next(ptbLimite.Height, this.ClientSize.Height - nemico.Height));
+
+                this.Controls.Add(nemico);
+                Nemici.Add(nemico);
+            }
         }
 
 
@@ -51,15 +68,53 @@ namespace PROGETTO_GIOCO_1
 
         private void tmrMainGameEvents_Tick(object sender, EventArgs e)
         {
+            if (GameOver)
+            {
+                tmrAttesaRicarica.Stop();
+                return;
+            }
             if (vaSu)
-                ptbPersonaggio.Top = Math.Max(0, ptbPersonaggio.Top - Velocità);
+                ptbPersonaggio.Top = Math.Max(ptbLimite.Height, ptbPersonaggio.Top - VelocitàPersonaggio);
 
             if (vaGiù)
-                ptbPersonaggio.Top = Math.Min(this.ClientSize.Height - ptbPersonaggio.Height, ptbPersonaggio.Top + Velocità);
+                ptbPersonaggio.Top = Math.Min(this.ClientSize.Height - ptbPersonaggio.Height, ptbPersonaggio.Top + VelocitàPersonaggio);
 
             if (haSparato)
             {
-                foreach (Control c in this.Controls)
+                for (int i = 0; i < Colpi.Count; i++)
+                {
+                    Colpi[i].Left += VelocitàColpo;
+                    if (Colpi[i].Left > this.ClientSize.Width)
+                    {
+                        this.Controls.Remove(Colpi[i]);
+                        Colpi[i].Dispose();
+                        Colpi.RemoveAt(i);
+                        i--;
+                    }
+                }
+
+                for (int i = 0; i < Nemici.Count; i++)
+                {
+                    for (int j = 0;  j < Colpi.Count; j++)
+                    {
+                        if (Nemici[i].Bounds.IntersectsWith(Colpi[j].Bounds) && Nemici[i].Visible)
+                        {
+                            Nemici[i].Enabled = false;
+                            Nemici[i].Visible = false;
+
+                            this.Controls.Remove(Colpi[j]);
+                            Colpi[j].Dispose();
+                            Colpi.RemoveAt(j);
+                            j--;
+
+                            ContaNemiciRimasti--;
+
+                            break;
+                        }
+                    }
+                }
+
+                /*foreach (Control c in this.Controls)
                 {
                     if (c is PictureBox && c.Tag != null && c.Tag.ToString() == "colpo")
                     {
@@ -83,6 +138,13 @@ namespace PROGETTO_GIOCO_1
                         colpo.Dispose();
                     }
                 }
+
+
+                foreach (Control colpo in colpiDaCancellare)
+                {
+                    colpo.Dispose();
+                    this.Controls.Remove(colpo);
+                }*/
             }
         }
 
@@ -95,7 +157,7 @@ namespace PROGETTO_GIOCO_1
             if (e.KeyCode == Keys.S || e.KeyCode == Keys.Down)
                 vaGiù = false;
 
-            if (e.KeyCode == Keys.R && !staRicaricando)
+            if (e.KeyCode == Keys.R && !staRicaricando && !staSparando)
             {
                 if (Munizioni != 30)
                 {
@@ -103,9 +165,9 @@ namespace PROGETTO_GIOCO_1
 
                     lblAttesa.Text = "Attesa:";
                     lblMunizioni.Text = RicaricaConta + " Secondi";
-                    lblMunizioni.Left = (lblAttesa.Left + lblAttesa.Width) - lblMunizioni.Width / 2;
+                    lblMunizioni.Left = (lblAttesa.Left + lblAttesa.Width / 2) - lblMunizioni.Width / 2;
 
-                    tmrAttesa.Start();
+                    tmrAttesaRicarica.Start();
                 }
             }
 
@@ -113,71 +175,158 @@ namespace PROGETTO_GIOCO_1
             {
                 if (!staRicaricando && !staSparando)
                 {
-                    haSparato = true;
-                    staSparando = true;
-
-                    PictureBox colpo = new PictureBox();
-                    colpo.Size = new Size(10, 5);
-                    colpo.BackColor = Color.Red;
-                    colpo.Tag = "colpo";
-
-                    colpo.Left = ptbPersonaggio.Left + ptbPersonaggio.Width;
-                    colpo.Top = ptbPersonaggio.Top + ptbPersonaggio.Height / 2;
-
                     if (Munizioni > 0)
                     {
-
-                        Munizioni--;
-
-                        this.Controls.Add(colpo);
-                        colpo.BringToFront();
-
-                        tmrSparo.Start();
+                        staSparando = true;
+                        if (!haSparato)
+                            haSparato = true;
+                        CreazioneColpoEAvvioSparo();
                     }
                 }
             }
         }
 
-        private void tmrAttesa_Tick(object sender, EventArgs e)
+
+        private void Form1_MouseClick(object sender, MouseEventArgs e)
         {
-            if (staRicaricando)
+            if (e.Button == MouseButtons.Left && !staRicaricando && !staSparando)
             {
-                RicaricaConta--;
-                if (RicaricaConta == 1)
-                    lblMunizioni.Text = RicaricaConta + " Secondo";
-                else
-                    lblMunizioni.Text = RicaricaConta + " Secondi";
-                lblMunizioni.Refresh();
-
-
-                if (RicaricaConta == 0)
+                if (Munizioni > 0)
                 {
-                    staRicaricando = false;
-
-                    Munizioni = 30;
-                    lblAttesa.Text = "";
-                    RicaricaConta = 5;
-                    lblMunizioni.Left = ColpiRimastiLocation;
-                    lblMunizioni.Text = Munizioni.ToString();
-
-                    tmrAttesa.Stop();
+                    staSparando = true;
+                    if (!haSparato)
+                        haSparato = true;
+                    CreazioneColpoEAvvioSparo();
                 }
             }
         }
 
-        private void tmrSparo_Tick(object sender, EventArgs e)
-        {
-            if (staSparando)
-            {
 
+        private void tmrAttesaRicarica_Tick(object sender, EventArgs e)
+        {
+            if (GameOver)
+            {
+                tmrAttesaRicarica.Stop();
+                return;
+            }
+
+            RicaricaConta--;
+            if (RicaricaConta == 1)
+                lblMunizioni.Text = RicaricaConta + " Secondo";
+            else
+                lblMunizioni.Text = RicaricaConta + " Secondi";
+            lblMunizioni.Refresh();
+
+
+            if (RicaricaConta == 0)
+            {
+                staRicaricando = false;
+
+                Munizioni = 30;
                 lblAttesa.Text = "";
+                RicaricaConta = 5;
                 lblMunizioni.Left = ColpiRimastiLocation;
                 lblMunizioni.Text = Munizioni.ToString();
-                staSparando = false;
+                lblMunizioni.Refresh();
 
-                tmrAttesa.Stop();
+                tmrAttesaRicarica.Stop();
+            }
+        }
+
+
+        private void tmrAttesaSparo_Tick(object sender, EventArgs e)
+        {
+            if (GameOver) 
+            {
+                tmrAttesaSparo.Stop();
+                return;
+            }
+            lblAttesa.Text = "";
+            lblMunizioni.Left = ColpiRimastiLocation;
+            lblMunizioni.Text = Munizioni.ToString();
+            staSparando = false;
+
+            tmrAttesaSparo.Stop();
+        }
+
+
+        private void GeneraNemici()
+        {
+            foreach (var nemico in Nemici)
+            {
+                nemico.Visible = true;
+                nemico.Location = new Point(GenNemici.Next(this.ClientSize.Width + nemico.Width, this.ClientSize.Width + 80), GenNemici.Next(ptbLimite.Height, this.ClientSize.Height - nemico.Height));
+            }
+
+            if (ContaNemiciRimasti == 0)
+            {
+                ContaNemiciRimasti = Nemici.Count + 2;
+                for (int i = 0; i < 2; i++)
+                {
+                    PictureBox nemico = new PictureBox();
+                    nemico.Size = new Size(60, 60);
+                    nemico.BackColor = Color.Green;
+                    nemico.Location = new Point(GenNemici.Next(this.ClientSize.Width + nemico.Width, this.ClientSize.Width + 80), GenNemici.Next(ptbLimite.Height, this.ClientSize.Height - nemico.Height));
+
+                    this.Controls.Add(nemico);
+                    Nemici.Add(nemico);
+                }
+            }
+        }
+
+
+        private void CreazioneColpoEAvvioSparo()
+        {
+            PictureBox colpo = new PictureBox();
+            colpo.Size = new Size(10, 5);
+            colpo.BackColor = Color.Red;
+            colpo.Left = ptbPersonaggio.Left + ptbPersonaggio.Width;
+            colpo.Top = ptbPersonaggio.Top + ptbPersonaggio.Height / 2;
+
+            Colpi.Add(colpo);
+
+            Munizioni--;
+            lblAttesa.Text = "Attendi...";
+            this.Controls.Add(colpo);
+            colpo.BringToFront();
+            tmrAttesaSparo.Start();
+        }
+
+        private void tmrMovimentoNemico_Tick(object sender, EventArgs e)
+        {
+            if (GameOver)
+            {
+                tmrMovimentoNemico.Stop();
+                return;
+            }
+            for (int i = 0; i < Nemici.Count; i++)
+            {
+                if (Nemici[i].Visible)
+                {
+
+                    Nemici[i].Left -= VelocitàNemico;
+
+                    if (Nemici[i].Bounds.IntersectsWith(ptbElimina.Bounds))
+                    {
+                        Nemici[i].Visible = false;
+                        VitaPersonaggio--;
+                        ContaNemiciRimasti--;
+                    }
+
+                    if (VitaPersonaggio == 0 && !GameOver)
+                    {
+                        GameOver = true;
+                        Application.Exit();
+                        break;
+                    }
+                }
+            }
+
+            if (ContaNemiciRimasti <= 0 && Nemici.Count < 20)
+            {
+                GeneraNemici();
+                tmrMovimentoNemico.Interval = Math.Max(20, tmrMovimentoNemico.Interval - 20);
             }
         }
     }
 }
-
