@@ -118,7 +118,7 @@
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <assembly alias="System.Windows.Forms" name="System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
-  <data name="proiettile" type="System.Resources.ResXFileRef, System.Windows.Forms">
+  <data name="Proiettili" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\proiettile.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
   <data name="ProtagonistaFermo" type="System.Resources.ResXFileRef, System.Windows.Forms">
@@ -127,19 +127,40 @@
   <data name="Sfondo" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\Sfondo.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
-  <data name="StartButtonNormal" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\StartButtonNormal.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-  </data>
-  <data name="StartButtonHover" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\StartButtonHover.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-  </data>
   <data name="SfondoImmagine" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\SfondoImmagine.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
-  <data name="SfondoImmagine2" type="System.Resources.ResXFileRef, System.Windows.Forms">
+  <data name="Fantasma" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\Fantasma-1.png.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="SfondolblMunizioni" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\SfondolblMunizioni.jpeg;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="SfondoMunizioni" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\SfondoImmagine1.jpg;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
-  <data name="Fantasma_1_png" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\Fantasma-1.png.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  <data name="BottoneExit" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\BottoneExit.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="BottoneMainMenu" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\BottoneMainMenu.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="BottoneResume" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\BottoneResume.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="BottoneRetry" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\BottoneRetry.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="BottoneStart" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\BottoneStart.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="SfondoPausa" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\SfondoPausa.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="TitoloGioco" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\TitoloGioco.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="SfondoGameOver" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\SfondoGameOver.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
 </root>

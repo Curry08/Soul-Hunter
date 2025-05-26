@@ -87,15 +87,6 @@
     <None Include="Resources\ProtagonistaFermo.png" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="Resources\StartButtonHover.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Resources\StartButtonNormal.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Resources\Colpo.bmp" />
-  </ItemGroup>
-  <ItemGroup>
     <None Include="Resources\proiettile.png" />
   </ItemGroup>
   <ItemGroup>
@@ -108,16 +99,37 @@
     <None Include="Resources\SfondoMunizioni.png" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="Resources\SfondoImmagine.jpg" />
-  </ItemGroup>
-  <ItemGroup>
     <None Include="Resources\SfondoImmagine1.jpg" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="Resources\Fantasma.jpeg" />
+    <None Include="Resources\Fantasma-1.png.png" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="Resources\Fantasma-1.png.png" />
+    <None Include="Resources\SfondolblMunizioni.jpeg" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\TitoloGioco.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\BottoneStart.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\BottoneExit.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\SfondoPausa.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\BottoneResume.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\BottoneRetry.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\BottoneMainMenu.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\SfondoGameOver.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

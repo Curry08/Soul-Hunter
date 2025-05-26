@@ -17,6 +17,8 @@ namespace PROGETTO_GIOCO_1
             this.UpdateStyles();
         }
 
+        bool GiocoIniziato = false;
+        bool GiocoInPausa = false;
         bool vaSu = false;
         bool vaGiù = false;
         bool staSparando = false;
@@ -24,144 +26,249 @@ namespace PROGETTO_GIOCO_1
         bool haSparato = false;
         bool GameOver = false;
 
-        int VelocitàPersonaggio = 5;
-        int VelocitàNemico = 5;
-        int VelocitàColpo = 10;
-        int Munizioni = 15;
-        int RicaricaConta = 5;
-        int ColpiRimastiLocation = 0;
-        int ContaNemiciRimasti = 5;
         int VitaPersonaggio = 10;
+        int VelocitàPersonaggio = 5;
+        int VelocitàNemico = 15;
+        int Munizioni = 15;
+        int VelocitàColpo = 10;
+        int ContaRicarica = 5;
+        int ContaNemiciRimasti = 5;
+        int LabelAttesaLocation = 0;       
 
         Random GenNemici = new Random();
 
-        List<Control> Colpi = new List<Control>();
+        List<Label> Colpi = new List<Label>();
         List<PictureBox> Nemici = new List<PictureBox>();
+       
+        
+        private void Form1_Resize_1(object sender, EventArgs e)
+        {
+            if (this.WindowState == FormWindowState.Minimized)
+            {
+                tmrMainGameEvents.Enabled = false;
+                tmrMovimentoNemico.Enabled = false;
+            }
+            else
+            {
+                tmrMainGameEvents.Enabled = true;
+                tmrMovimentoNemico.Enabled = true;
+            }
+        }
 
 
         private void Form1_Load(object sender, EventArgs e)
         {
-            ColpiRimastiLocation = lblMunizioni.Left;
-
+            LabelAttesaLocation = lblMunizioni.Left;
+        }
+        
+        
+        private void ptbStart_Click(object sender, EventArgs e)
+        {
             for (int i = 0; i < 5; i++)
             {
                 PictureBox nemico = new PictureBox();
                 nemico.Size = new Size(60, 60);
+
                 nemico.BackColor = Color.Transparent;
-                nemico.Image = Properties.Resources.Fantasma_1_png;
-                
+                nemico.Image = Properties.Resources.Fantasma;
                 nemico.SizeMode = PictureBoxSizeMode.Zoom;
+
                 nemico.Location = new Point(GenNemici.Next(this.ClientSize.Width + nemico.Width, this.ClientSize.Width + 80), GenNemici.Next(ptbLimite.Height, this.ClientSize.Height - nemico.Height));
 
                 this.Controls.Add(nemico);
                 Nemici.Add(nemico);
             }
 
+            GiocoIniziato = true;
+            ptbTitolo.Visible = false;
+            ptbStart.Visible = false;
+            ptbExit.Visible = false;
+
+            this.BackgroundImage = Properties.Resources.Sfondo;
+            this.BackgroundImageLayout = ImageLayout.Stretch;
+            this.Refresh();
+
+            ptbPersonaggio.Visible = true;
+            lblMunizioni.Visible = true;
+        }
+
+
+        private void ptbExit_Click(object sender, EventArgs e)
+        {
+            Application.Exit();
+        }
+        
+        
+        private void ptbRetry_Click(object sender, EventArgs e)
+        {
+            ptbPersonaggio.Visible = true;
+            lblMunizioni.Visible = true;
+
+            ptbRetry.Visible = false;
+            ptbMainMenu.Visible = false;
+
+            try
+            {
+                for (int i = 0; i < Colpi.Count; i++)
+                {
+                    this.Controls.Remove(Colpi[i]);
+                    Colpi[i].Dispose();
+                    Colpi.RemoveAt(i);
+                }
+            }
+            catch (ArgumentOutOfRangeException)
+            {
+                // NON FA NULLA
+            }
+
+            ContaNemiciRimasti = 5;
+            GeneraNemici();
+
+            Munizioni = 15;
+            lblMunizioni.Text = Munizioni.ToString();
+
+            this.BackgroundImage = Properties.Resources.Sfondo;
+            this.Refresh();
+
+            GiocoInPausa = false;
+        }
+        
+        
+        private void ptbMainMenu_Click(object sender, EventArgs e)
+        {
+            ptbPersonaggio.Visible = false;
+            ptbRetry.Visible = false;
+            ptbMainMenu.Visible = false;
+
+            Munizioni = 15;
+            lblMunizioni.Text = Munizioni.ToString();
+            lblMunizioni.Visible = false;
+
+            try
+            {
+                for (int i = 0; i < Colpi.Count; i++)
+                {
+                    this.Controls.Remove(Colpi[i]);
+                    Colpi[i].Dispose();
+                    Colpi.RemoveAt(i);
+                }
+
+                for (int i = 0; i < Nemici.Count; i++)
+                {
+                    this.Controls.Remove(Colpi[i]);
+                    Colpi[i].Dispose();
+                    Colpi.RemoveAt(i);
+                }
+            }
+            catch (ArgumentOutOfRangeException)
+            {
+                // NON FA NULLA
+            }
+
+            this.BackgroundImage = Properties.Resources.SfondoImmagine;
+            this.BackgroundImageLayout = ImageLayout.Center;
+            this.Refresh();
+
+            ptbTitolo.Visible = true;
+            ptbStart.Visible = true;
+            ptbExit.Visible = true;
+
+            GiocoInPausa = false;
+            GiocoIniziato = false;
         }
 
 
         private void Form1_KeyDown(object sender, KeyEventArgs e)
         {
+            if (GameOver || !GiocoIniziato || GiocoInPausa)
+                return;
+
             if (e.KeyCode == Keys.W || e.KeyCode == Keys.Up)
                 vaSu = true;
 
             if (e.KeyCode == Keys.S || e.KeyCode == Keys.Down)
                 vaGiù = true;
         }
+        
 
-
-        private void tmrMainGameEvents_Tick(object sender, EventArgs e)
+        private void Form1_MouseClick(object sender, MouseEventArgs e)
         {
-            if (panel1.Visible == true)
-            {
-                
+            if (GameOver || !GiocoIniziato || GiocoInPausa)
                 return;
-            }
-            
-            if (GameOver)
+
+            if (e.Button == MouseButtons.Left && !staRicaricando && !staSparando)
             {
-                tmrAttesaRicarica.Stop();
-                return;
-            }
-            if (vaSu)
-                ptbPersonaggio.Top = Math.Max(ptbLimite.Height, ptbPersonaggio.Top - VelocitàPersonaggio);
-
-            if (vaGiù)
-                ptbPersonaggio.Top = Math.Min(this.ClientSize.Height - ptbPersonaggio.Height, ptbPersonaggio.Top + VelocitàPersonaggio);
-
-            if (haSparato)
-            {
-                for (int i = 0; i < Colpi.Count; i++)
+                if (Munizioni > 0)
                 {
-                    Colpi[i].Left += VelocitàColpo;
-                    if (Colpi[i].Left > this.ClientSize.Width)
-                    {
-                        this.Controls.Remove(Colpi[i]);
-                        Colpi[i].Dispose();
-                        Colpi.RemoveAt(i);
-                        i--;
-                    }
-
+                    staSparando = true;
+                    if (!haSparato)
+                        haSparato = true;
+                    CreazioneColpoEAvvioSparo();
                 }
-
-                for (int i = 0; i < Nemici.Count; i++)
-                {
-                    for (int j = 0; j < Colpi.Count; j++)
-                    {
-                        if (Nemici[i].Bounds.IntersectsWith(Colpi[j].Bounds) && Nemici[i].Visible)
-                        {
-                            Nemici[i].Enabled = false;
-                            Nemici[i].Visible = false;
-
-                            this.Controls.Remove(Colpi[j]);
-                            Colpi[j].Dispose();
-                            Colpi.RemoveAt(j);
-                            j--;
-
-                            ContaNemiciRimasti--;
-
-                            break;
-                        }
-                    }
-                }
-
-                /*foreach (Control c in this.Controls)
-                {
-                    if (c is PictureBox && c.Tag != null && c.Tag.ToString() == "colpo")
-                    {
-
-                        c.Left += VelocitàColpo;
-                        c.Invalidate(false);
-                        if (c.Top < -c.Height)
-                        {
-                            this.Controls.Remove(c);
-                            c.Dispose();
-                        }
-                    }
-
-                    if (c.Left > this.ClientSize.Width)
-                    {
-                        colpiDaCancellare.Add(c);
-                    }
-                    foreach (Control colpo in colpiDaCancellare)
-                    {
-                        this.Controls.Remove(colpo);
-                        colpo.Dispose();
-                    }
-                }
-
-
-                foreach (Control colpo in colpiDaCancellare)
-                {
-                    colpo.Dispose();
-                    this.Controls.Remove(colpo);
-                }*/
             }
         }
-
-
+        
+        
         private void Form1_KeyUp(object sender, KeyEventArgs e)
         {
+            if (GameOver || !GiocoIniziato)
+                return;
+
+            if (e.KeyCode == Keys.Escape)
+            {
+                if (!GiocoInPausa)
+                {
+                    foreach (Label colpo in Colpi)
+                    {
+                        colpo.Visible = false;
+                    }
+
+                    foreach (PictureBox nemico in Nemici)
+                    {
+                        nemico.Visible = false;
+                    }
+
+                    ptbPersonaggio.Visible = false;
+                    lblMunizioni.Visible = false;
+                    lblAttesa.Visible = false;
+
+                    ptbRetry.Visible = true;
+                    ptbMainMenu.Visible = true;
+
+                    this.BackgroundImage = Properties.Resources.SfondoPausa;
+                    this.Refresh();
+
+                    GiocoInPausa = true;
+                }
+                else
+                {
+                    ptbRetry.Visible = false;
+                    ptbMainMenu.Visible = false;
+
+                    this.BackgroundImage = Properties.Resources.Sfondo;
+                    this.Refresh();
+
+                    foreach (Label colpo in Colpi)
+                    {
+                        colpo.Visible = true;
+                    }
+
+                    foreach (PictureBox nemico in Nemici)
+                    {
+                        nemico.Visible = true;
+                    }
+
+                    ptbPersonaggio.Visible = true;
+                    lblMunizioni.Visible = true;
+                    lblAttesa.Visible = true;
+
+                    GiocoInPausa = false;
+                }
+            }
+
+            if (GiocoInPausa)
+                return;
+
             if (e.KeyCode == Keys.W || e.KeyCode == Keys.Up)
                 vaSu = false;
 
@@ -174,9 +281,8 @@ namespace PROGETTO_GIOCO_1
                 {
                     staRicaricando = true;
 
-                    
-                    lblAttesa.Text = RicaricaConta + " Secondi";
-                    lblMunizioni.Left = (lblAttesa.Left + lblAttesa.Width / 2) - lblMunizioni.Width / 2;
+                    lblAttesa.Text = ContaRicarica + " Secondi";
+                    lblAttesa.Left = (lblMunizioni.Left + lblMunizioni.Width / 2) - lblAttesa.Width / 2;
 
                     tmrAttesaRicarica.Start();
                 }
@@ -198,138 +304,66 @@ namespace PROGETTO_GIOCO_1
         }
 
 
-        private void Form1_MouseClick(object sender, MouseEventArgs e)
+        private void tmrMainGameEvents_Tick(object sender, EventArgs e)
         {
-            if (e.Button == MouseButtons.Left && !staRicaricando && !staSparando)
+            if (GameOver || !GiocoIniziato || GiocoInPausa)
+                return;
+
+            if (vaSu)
             {
-                if (Munizioni > 0)
+                ptbPersonaggio.Top = Math.Max(ptbLimite.Height, ptbPersonaggio.Top - VelocitàPersonaggio);
+                ptbPersonaggio.Refresh();
+            }
+
+            if (vaGiù)
+            {
+                ptbPersonaggio.Top = Math.Min(this.ClientSize.Height - ptbPersonaggio.Height, ptbPersonaggio.Top + VelocitàPersonaggio);
+                ptbPersonaggio.Refresh();
+            }
+            
+            if (haSparato)
+            {
+                for (int i = 0; i < Colpi.Count; i++)
                 {
-                    staSparando = true;
-                    if (!haSparato)
-                        haSparato = true;
-                    CreazioneColpoEAvvioSparo();
+                    Colpi[i].Left += VelocitàColpo;
+                    if (Colpi[i].Left > this.ClientSize.Width)
+                    {
+                        this.Controls.Remove(Colpi[i]);
+                        Colpi[i].Dispose();
+                        Colpi.RemoveAt(i);
+                        i--;
+                    }
+
+                }
+
+                for (int i = 0; i < Nemici.Count; i++)
+                {
+                    for (int j = 0; j < Colpi.Count; j++)
+                    {
+                        if (Nemici[i].Bounds.IntersectsWith(Colpi[j].Bounds) && Nemici[i].Visible)
+                        {
+                            Nemici[i].Visible = false;
+
+                            this.Controls.Remove(Colpi[j]);
+                            Colpi[j].Dispose();
+                            Colpi.RemoveAt(j);
+                            j--;
+
+                            ContaNemiciRimasti--;
+
+                            break;
+                        }
+                    }
                 }
             }
         }
 
-
-        private void tmrAttesaRicarica_Tick(object sender, EventArgs e)
-        {
-            if (panel1.Visible == true)
-            {
-
-                return;
-            }
-
-            if (GameOver)
-            {
-                tmrAttesaRicarica.Stop();
-                return;
-            }
-
-            RicaricaConta--;
-            if (RicaricaConta == 1)
-                lblAttesa.Text = RicaricaConta + " Secondo";
-            else
-                lblAttesa.Text = RicaricaConta + " Secondi";
-            lblAttesa.Refresh();
-
-
-            if (RicaricaConta == 0)
-            {
-                staRicaricando = false;
-
-                Munizioni = 15;
-                lblAttesa.Text = "";
-                RicaricaConta = 5;
-                lblMunizioni.Left = ColpiRimastiLocation;
-                lblMunizioni.Text = Munizioni.ToString();
-                lblMunizioni.Refresh();
-
-                tmrAttesaRicarica.Stop();
-            }
-        }
-
-
-        private void tmrAttesaSparo_Tick(object sender, EventArgs e)
-        {
-            if (panel1.Visible == true)
-            {
-
-                return;
-            }
-            if (GameOver)
-            {
-                tmrAttesaSparo.Stop();
-                return;
-            }
-            lblAttesa.Text = "";
-            lblMunizioni.Left = ColpiRimastiLocation;
-            lblMunizioni.Text = Munizioni.ToString();
-            staSparando = false;
-
-            tmrAttesaSparo.Stop();
-        }
-
-
-        private void GeneraNemici()
-        {
-            foreach (var nemico in Nemici)
-            {
-                nemico.Visible = true;
-                nemico.Location = new Point(GenNemici.Next(this.ClientSize.Width + nemico.Width, this.ClientSize.Width + 80), GenNemici.Next(ptbLimite.Height, this.ClientSize.Height - nemico.Height));
-            }
-
-            if (ContaNemiciRimasti == 0)
-            {
-                ContaNemiciRimasti = Nemici.Count + 2;
-                for (int i = 0; i < 2; i++)
-                {
-                    PictureBox nemico = new PictureBox();
-                    nemico.Size = new Size(60, 60);
-                    nemico.BackColor = Color.Transparent;
-                    nemico.Image = Properties.Resources.Fantasma_1_png;
-                    nemico.SizeMode = PictureBoxSizeMode.Zoom;// Assicurati di avere un'immagine chiamata "nemico" nelle risorse del progetto
-                    nemico.Location = new Point(GenNemici.Next(this.ClientSize.Width + nemico.Width, this.ClientSize.Width + 80), GenNemici.Next(ptbLimite.Height, this.ClientSize.Height - nemico.Height));
-
-                    this.Controls.Add(nemico);
-                    Nemici.Add(nemico);
-                }
-            }
-        }
-
-
-        private void CreazioneColpoEAvvioSparo()
-        {
-            PictureBox colpo = new PictureBox();
-            colpo.Size = new Size(25, 15);
-            colpo.BackColor = Color.Transparent;
-            colpo.Image = Properties.Resources.proiettile; // Assicurati di avere un'immagine chiamata "colpo" nelle risorse del progetto
-            colpo.SizeMode = PictureBoxSizeMode.Zoom;
-            colpo.Left = ptbPersonaggio.Left + ptbPersonaggio.Width;
-            colpo.Top = ptbPersonaggio.Top + ptbPersonaggio.Height / 2;
-
-            Colpi.Add(colpo);
-
-            Munizioni--;
-            lblAttesa.Text = "Attendi...";
-            this.Controls.Add(colpo);
-            colpo.BringToFront();
-            tmrAttesaSparo.Start();
-        }
 
         private void tmrMovimentoNemico_Tick(object sender, EventArgs e)
         {
-            if (panel1.Visible == true)
-            {
+            if (GameOver || !GiocoIniziato || GiocoInPausa)
+                return;
 
-                return;
-            }
-            if (GameOver)
-            {
-                tmrMovimentoNemico.Stop();
-                return;
-            }
             for (int i = 0; i < Nemici.Count; i++)
             {
                 if (Nemici[i].Visible)
@@ -346,58 +380,146 @@ namespace PROGETTO_GIOCO_1
 
                     if (VitaPersonaggio == 0 && !GameOver)
                     {
+                        ptbPersonaggio.Visible = false;
+
+                        Munizioni = 15;
+                        lblMunizioni.Text = Munizioni.ToString();
+                        lblMunizioni.Visible = false;
+
+                        try
+                        {
+                            for (int j = 0; j < Colpi.Count; j++)
+                            {
+                                this.Controls.Remove(Colpi[j]);
+                                Colpi[j].Dispose();
+                                Colpi.RemoveAt(j);
+                                j--;
+                            }
+
+                            for (int j = 0; j < Nemici.Count; j++)
+                            {
+                                this.Controls.Remove(Nemici[j]);
+                                Nemici[j].Dispose();
+                                Nemici.RemoveAt(j);
+                                j--;
+                            }
+
+                        }
+                        catch (ArgumentOutOfRangeException)
+                        {
+                            // NON FA NULLA
+                        }
+
+                        this.BackgroundImage = Properties.Resources.SfondoGameOver;
+                        this.Refresh();
+
+                        ptbRetry.Visible = true;
+                        ptbRetry.Left = this.ClientSize.Width / 2 - ptbRetry.Width / 2 + 5;
+                        ptbMainMenu.Visible = true;
+                        ptbMainMenu.Left = this.ClientSize.Width / 2 - ptbMainMenu.Width / 2 + 5;
+
+                        GiocoInPausa = false;
+                        GiocoIniziato = false;
+                        
                         GameOver = true;
-                        Application.Exit();
                         break;
                     }
                 }
             }
 
-            if (ContaNemiciRimasti <= 0 && Nemici.Count < 20)
+            if (ContaNemiciRimasti == 0 && Nemici.Count < 15)
             {
                 GeneraNemici();
                 tmrMovimentoNemico.Interval = Math.Max(20, tmrMovimentoNemico.Interval - 20);
             }
         }
 
-        private void Form1_Resize_1(object sender, EventArgs e)
+        
+        private void tmrAttesaRicarica_Tick(object sender, EventArgs e)
         {
-            if (this.WindowState == FormWindowState.Minimized)
-            {
-                // sospendi il gioco
-                tmrMainGameEvents.Enabled = false;
-                tmrMovimentoNemico.Enabled = false;
-            }
+            if (GameOver || !GiocoIniziato || GiocoInPausa)
+                return;
+
+            ContaRicarica--;
+            if (ContaRicarica == 1)
+                lblAttesa.Text = ContaRicarica + " Secondo";
             else
+                lblAttesa.Text = ContaRicarica + " Secondi";
+            lblAttesa.Refresh();
+
+
+            if (ContaRicarica == 0)
             {
-                // riprendi il gioco
-                tmrMainGameEvents.Enabled = true;
-                tmrMovimentoNemico.Enabled = true;
+                staRicaricando = false;
+
+                Munizioni = 15;
+                lblAttesa.Text = "";
+                ContaRicarica = 5;
+                lblAttesa.Left = LabelAttesaLocation;
+                lblMunizioni.Text = Munizioni.ToString();
+                lblMunizioni.Refresh();
+
+                tmrAttesaRicarica.Stop();
             }
         }
 
-        private void ptbStart_MouseHover(object sender, EventArgs e)
+
+        private void tmrAttesaSparo_Tick(object sender, EventArgs e)
         {
-            ptbStart.Image = Properties.Resources.StartButtonHover; // Assicurati di avere un'immagine chiamata "start_hover" nelle risorse del progetto
-            ptbStart.Refresh();
+            lblAttesa.Text = "";
+            lblMunizioni.Text = Munizioni.ToString();
+            staSparando = false;
+
+            tmrAttesaSparo.Stop();
         }
 
-        private void ptbStart_MouseLeave(object sender, EventArgs e)
+
+        private void CreazioneColpoEAvvioSparo()
         {
-            ptbStart.Image = Properties.Resources.StartButtonNormal;
-            ptbStart.Refresh(); 
+            Label colpo = new Label();
+            colpo.Size = new Size(30, 10);
+            colpo.BackColor = Color.Transparent;
+            colpo.Image = Properties.Resources.Proiettili;
+            colpo.ImageAlign = ContentAlignment.MiddleRight;
+            colpo.Left = ptbPersonaggio.Left + ptbPersonaggio.Width;
+            colpo.Top = ptbPersonaggio.Top + ptbPersonaggio.Height / 2;
+
+            Colpi.Add(colpo);
+
+            Munizioni--;
+            lblAttesa.Text = "Attendi...";
+            this.Controls.Add(colpo);
+            colpo.BringToFront();
+            tmrAttesaSparo.Start();
         }
 
-        private void ptbStart_MouseEnter(object sender, EventArgs e)
+
+        private void GeneraNemici()
         {
-            ptbStart.Image = Properties.Resources.StartButtonHover; // Assicurati di avere un'immagine chiamata "start_hover" nelle risorse del progetto
-            ptbStart.Refresh();
+            foreach (PictureBox nemico in Nemici)
+            {
+                nemico.Visible = true;
+                nemico.Location = new Point(GenNemici.Next(this.ClientSize.Width + nemico.Width, this.ClientSize.Width + 80), GenNemici.Next(ptbLimite.Height, this.ClientSize.Height - nemico.Height));
+            }
+
+            if (ContaNemiciRimasti == 0)
+            {
+                ContaNemiciRimasti = Nemici.Count + 2;
+                for (int i = 0; i < 2; i++)
+                {
+                    PictureBox nemico = new PictureBox();
+                    nemico.Size = new Size(60, 60);
+                    nemico.BackColor = Color.Transparent;
+                    nemico.Image = Properties.Resources.Fantasma;
+                    nemico.SizeMode = PictureBoxSizeMode.Zoom;
+                    nemico.Location = new Point(GenNemici.Next(this.ClientSize.Width + nemico.Width, this.ClientSize.Width + 80), GenNemici.Next(ptbLimite.Height, this.ClientSize.Height - nemico.Height));
+
+                    this.Controls.Add(nemico);
+                    Nemici.Add(nemico);
+                }
+            }
         }
 
-        private void ptbStart_Click(object sender, EventArgs e)
-        {
-            panel1.Visible = false;
-
-        }
+        
     }
 }
