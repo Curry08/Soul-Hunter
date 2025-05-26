@@ -38,9 +38,13 @@
             this.ptbLimite = new System.Windows.Forms.PictureBox();
             this.ptbElimina = new System.Windows.Forms.PictureBox();
             this.tmrMovimentoNemico = new System.Windows.Forms.Timer(this.components);
+            this.panel1 = new System.Windows.Forms.Panel();
+            this.ptbStart = new System.Windows.Forms.PictureBox();
             ((System.ComponentModel.ISupportInitialize)(this.ptbPersonaggio)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.ptbLimite)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.ptbElimina)).BeginInit();
+            this.panel1.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.ptbStart)).BeginInit();
             this.SuspendLayout();
             // 
             // ptbPersonaggio
@@ -59,13 +63,14 @@
             this.lblMunizioni.AutoEllipsis = true;
             this.lblMunizioni.AutoSize = true;
             this.lblMunizioni.BackColor = System.Drawing.Color.Red;
-            this.lblMunizioni.Font = new System.Drawing.Font("Microsoft Sans Serif", 24.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lblMunizioni.ForeColor = System.Drawing.Color.Black;
-            this.lblMunizioni.Location = new System.Drawing.Point(498, 34);
+            this.lblMunizioni.Font = new System.Drawing.Font("Impact", 24.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lblMunizioni.ForeColor = System.Drawing.Color.White;
+            this.lblMunizioni.Image = global::PROGETTO_GIOCO_1.Properties.Resources.SfondoImmagine2;
+            this.lblMunizioni.Location = new System.Drawing.Point(506, 31);
             this.lblMunizioni.Name = "lblMunizioni";
-            this.lblMunizioni.Size = new System.Drawing.Size(55, 38);
+            this.lblMunizioni.Size = new System.Drawing.Size(51, 41);
             this.lblMunizioni.TabIndex = 3;
-            this.lblMunizioni.Text = "30";
+            this.lblMunizioni.Text = "15";
             // 
             // tmrMainGameEvents
             // 
@@ -105,9 +110,9 @@
             // ptbElimina
             // 
             this.ptbElimina.BackColor = System.Drawing.Color.Transparent;
-            this.ptbElimina.Location = new System.Drawing.Point(0, 65);
+            this.ptbElimina.Location = new System.Drawing.Point(0, 9);
             this.ptbElimina.Name = "ptbElimina";
-            this.ptbElimina.Size = new System.Drawing.Size(100, 399);
+            this.ptbElimina.Size = new System.Drawing.Size(116, 455);
             this.ptbElimina.TabIndex = 6;
             this.ptbElimina.TabStop = false;
             // 
@@ -116,6 +121,30 @@
             this.tmrMovimentoNemico.Enabled = true;
             this.tmrMovimentoNemico.Tick += new System.EventHandler(this.tmrMovimentoNemico_Tick);
             // 
+            // panel1
+            // 
+            this.panel1.BackgroundImage = global::PROGETTO_GIOCO_1.Properties.Resources.SfondoImmagine;
+            this.panel1.Controls.Add(this.ptbStart);
+            this.panel1.Location = new System.Drawing.Point(0, -2);
+            this.panel1.Name = "panel1";
+            this.panel1.Size = new System.Drawing.Size(1143, 466);
+            this.panel1.TabIndex = 8;
+            // 
+            // ptbStart
+            // 
+            this.ptbStart.BackColor = System.Drawing.Color.Transparent;
+            this.ptbStart.Image = global::PROGETTO_GIOCO_1.Properties.Resources.StartButtonNormal;
+            this.ptbStart.Location = new System.Drawing.Point(492, 211);
+            this.ptbStart.Name = "ptbStart";
+            this.ptbStart.Size = new System.Drawing.Size(131, 51);
+            this.ptbStart.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
+            this.ptbStart.TabIndex = 0;
+            this.ptbStart.TabStop = false;
+            this.ptbStart.Click += new System.EventHandler(this.ptbStart_Click);
+            this.ptbStart.MouseEnter += new System.EventHandler(this.ptbStart_MouseEnter);
+            this.ptbStart.MouseLeave += new System.EventHandler(this.ptbStart_MouseLeave);
+            this.ptbStart.MouseHover += new System.EventHandler(this.ptbStart_MouseHover);
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -123,7 +152,8 @@
             this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(128)))), ((int)(((byte)(255)))), ((int)(((byte)(255)))));
             this.BackgroundImage = global::PROGETTO_GIOCO_1.Properties.Resources.Sfondo;
             this.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
-            this.ClientSize = new System.Drawing.Size(1084, 461);
+            this.ClientSize = new System.Drawing.Size(1112, 461);
+            this.Controls.Add(this.panel1);
             this.Controls.Add(this.lblAttesa);
             this.Controls.Add(this.lblMunizioni);
             this.Controls.Add(this.ptbPersonaggio);
@@ -138,9 +168,12 @@
             this.KeyDown += new System.Windows.Forms.KeyEventHandler(this.Form1_KeyDown);
             this.KeyUp += new System.Windows.Forms.KeyEventHandler(this.Form1_KeyUp);
             this.MouseClick += new System.Windows.Forms.MouseEventHandler(this.Form1_MouseClick);
+            this.Resize += new System.EventHandler(this.Form1_Resize_1);
             ((System.ComponentModel.ISupportInitialize)(this.ptbPersonaggio)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.ptbLimite)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.ptbElimina)).EndInit();
+            this.panel1.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)(this.ptbStart)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -156,6 +189,8 @@
         private System.Windows.Forms.PictureBox ptbLimite;
         private System.Windows.Forms.PictureBox ptbElimina;
         private System.Windows.Forms.Timer tmrMovimentoNemico;
+        private System.Windows.Forms.Panel panel1;
+        private System.Windows.Forms.PictureBox ptbStart;
     }
 }
 

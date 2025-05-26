@@ -81,12 +81,6 @@
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="Resources\personaggio-1.png.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Resources\Sfondo %282%29.jpg" />
-  </ItemGroup>
-  <ItemGroup>
     <None Include="Resources\Sfondo.png" />
   </ItemGroup>
   <ItemGroup>
@@ -97,6 +91,33 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="Resources\StartButtonNormal.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Colpo.bmp" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\proiettile.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\SfondoStart.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\SfondoImmagine.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\SfondoMunizioni.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\SfondoImmagine.jpg" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\SfondoImmagine1.jpg" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Fantasma.jpeg" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Fantasma-1.png.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

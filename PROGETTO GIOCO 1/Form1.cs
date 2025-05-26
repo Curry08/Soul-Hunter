@@ -25,12 +25,12 @@ namespace PROGETTO_GIOCO_1
         bool GameOver = false;
 
         int VelocitàPersonaggio = 5;
-        int VelocitàNemico = 2;
-        int VelocitàColpo = 3;
-        int Munizioni = 30;
+        int VelocitàNemico = 5;
+        int VelocitàColpo = 10;
+        int Munizioni = 15;
         int RicaricaConta = 5;
         int ColpiRimastiLocation = 0;
-        int ContaNemiciRimasti = 10;
+        int ContaNemiciRimasti = 5;
         int VitaPersonaggio = 10;
 
         Random GenNemici = new Random();
@@ -43,16 +43,20 @@ namespace PROGETTO_GIOCO_1
         {
             ColpiRimastiLocation = lblMunizioni.Left;
 
-            for (int i = 0; i < 10; i++)
+            for (int i = 0; i < 5; i++)
             {
                 PictureBox nemico = new PictureBox();
                 nemico.Size = new Size(60, 60);
-                nemico.BackColor = Color.Green;
+                nemico.BackColor = Color.Transparent;
+                nemico.Image = Properties.Resources.Fantasma_1_png;
+                
+                nemico.SizeMode = PictureBoxSizeMode.Zoom;
                 nemico.Location = new Point(GenNemici.Next(this.ClientSize.Width + nemico.Width, this.ClientSize.Width + 80), GenNemici.Next(ptbLimite.Height, this.ClientSize.Height - nemico.Height));
 
                 this.Controls.Add(nemico);
                 Nemici.Add(nemico);
             }
+
         }
 
 
@@ -68,6 +72,12 @@ namespace PROGETTO_GIOCO_1
 
         private void tmrMainGameEvents_Tick(object sender, EventArgs e)
         {
+            if (panel1.Visible == true)
+            {
+                
+                return;
+            }
+            
             if (GameOver)
             {
                 tmrAttesaRicarica.Stop();
@@ -91,11 +101,12 @@ namespace PROGETTO_GIOCO_1
                         Colpi.RemoveAt(i);
                         i--;
                     }
+
                 }
 
                 for (int i = 0; i < Nemici.Count; i++)
                 {
-                    for (int j = 0;  j < Colpi.Count; j++)
+                    for (int j = 0; j < Colpi.Count; j++)
                     {
                         if (Nemici[i].Bounds.IntersectsWith(Colpi[j].Bounds) && Nemici[i].Visible)
                         {
@@ -159,12 +170,12 @@ namespace PROGETTO_GIOCO_1
 
             if (e.KeyCode == Keys.R && !staRicaricando && !staSparando)
             {
-                if (Munizioni != 30)
+                if (Munizioni != 15)
                 {
                     staRicaricando = true;
 
-                    lblAttesa.Text = "Attesa:";
-                    lblMunizioni.Text = RicaricaConta + " Secondi";
+                    
+                    lblAttesa.Text = RicaricaConta + " Secondi";
                     lblMunizioni.Left = (lblAttesa.Left + lblAttesa.Width / 2) - lblMunizioni.Width / 2;
 
                     tmrAttesaRicarica.Start();
@@ -204,6 +215,12 @@ namespace PROGETTO_GIOCO_1
 
         private void tmrAttesaRicarica_Tick(object sender, EventArgs e)
         {
+            if (panel1.Visible == true)
+            {
+
+                return;
+            }
+
             if (GameOver)
             {
                 tmrAttesaRicarica.Stop();
@@ -212,17 +229,17 @@ namespace PROGETTO_GIOCO_1
 
             RicaricaConta--;
             if (RicaricaConta == 1)
-                lblMunizioni.Text = RicaricaConta + " Secondo";
+                lblAttesa.Text = RicaricaConta + " Secondo";
             else
-                lblMunizioni.Text = RicaricaConta + " Secondi";
-            lblMunizioni.Refresh();
+                lblAttesa.Text = RicaricaConta + " Secondi";
+            lblAttesa.Refresh();
 
 
             if (RicaricaConta == 0)
             {
                 staRicaricando = false;
 
-                Munizioni = 30;
+                Munizioni = 15;
                 lblAttesa.Text = "";
                 RicaricaConta = 5;
                 lblMunizioni.Left = ColpiRimastiLocation;
@@ -236,7 +253,12 @@ namespace PROGETTO_GIOCO_1
 
         private void tmrAttesaSparo_Tick(object sender, EventArgs e)
         {
-            if (GameOver) 
+            if (panel1.Visible == true)
+            {
+
+                return;
+            }
+            if (GameOver)
             {
                 tmrAttesaSparo.Stop();
                 return;
@@ -265,7 +287,9 @@ namespace PROGETTO_GIOCO_1
                 {
                     PictureBox nemico = new PictureBox();
                     nemico.Size = new Size(60, 60);
-                    nemico.BackColor = Color.Green;
+                    nemico.BackColor = Color.Transparent;
+                    nemico.Image = Properties.Resources.Fantasma_1_png;
+                    nemico.SizeMode = PictureBoxSizeMode.Zoom;// Assicurati di avere un'immagine chiamata "nemico" nelle risorse del progetto
                     nemico.Location = new Point(GenNemici.Next(this.ClientSize.Width + nemico.Width, this.ClientSize.Width + 80), GenNemici.Next(ptbLimite.Height, this.ClientSize.Height - nemico.Height));
 
                     this.Controls.Add(nemico);
@@ -278,8 +302,10 @@ namespace PROGETTO_GIOCO_1
         private void CreazioneColpoEAvvioSparo()
         {
             PictureBox colpo = new PictureBox();
-            colpo.Size = new Size(10, 5);
-            colpo.BackColor = Color.Red;
+            colpo.Size = new Size(25, 15);
+            colpo.BackColor = Color.Transparent;
+            colpo.Image = Properties.Resources.proiettile; // Assicurati di avere un'immagine chiamata "colpo" nelle risorse del progetto
+            colpo.SizeMode = PictureBoxSizeMode.Zoom;
             colpo.Left = ptbPersonaggio.Left + ptbPersonaggio.Width;
             colpo.Top = ptbPersonaggio.Top + ptbPersonaggio.Height / 2;
 
@@ -294,6 +320,11 @@ namespace PROGETTO_GIOCO_1
 
         private void tmrMovimentoNemico_Tick(object sender, EventArgs e)
         {
+            if (panel1.Visible == true)
+            {
+
+                return;
+            }
             if (GameOver)
             {
                 tmrMovimentoNemico.Stop();
@@ -305,7 +336,7 @@ namespace PROGETTO_GIOCO_1
                 {
 
                     Nemici[i].Left -= VelocitàNemico;
-
+                    Nemici[i].Refresh();
                     if (Nemici[i].Bounds.IntersectsWith(ptbElimina.Bounds))
                     {
                         Nemici[i].Visible = false;
@@ -327,6 +358,46 @@ namespace PROGETTO_GIOCO_1
                 GeneraNemici();
                 tmrMovimentoNemico.Interval = Math.Max(20, tmrMovimentoNemico.Interval - 20);
             }
+        }
+
+        private void Form1_Resize_1(object sender, EventArgs e)
+        {
+            if (this.WindowState == FormWindowState.Minimized)
+            {
+                // sospendi il gioco
+                tmrMainGameEvents.Enabled = false;
+                tmrMovimentoNemico.Enabled = false;
+            }
+            else
+            {
+                // riprendi il gioco
+                tmrMainGameEvents.Enabled = true;
+                tmrMovimentoNemico.Enabled = true;
+            }
+        }
+
+        private void ptbStart_MouseHover(object sender, EventArgs e)
+        {
+            ptbStart.Image = Properties.Resources.StartButtonHover; // Assicurati di avere un'immagine chiamata "start_hover" nelle risorse del progetto
+            ptbStart.Refresh();
+        }
+
+        private void ptbStart_MouseLeave(object sender, EventArgs e)
+        {
+            ptbStart.Image = Properties.Resources.StartButtonNormal;
+            ptbStart.Refresh(); 
+        }
+
+        private void ptbStart_MouseEnter(object sender, EventArgs e)
+        {
+            ptbStart.Image = Properties.Resources.StartButtonHover; // Assicurati di avere un'immagine chiamata "start_hover" nelle risorse del progetto
+            ptbStart.Refresh();
+        }
+
+        private void ptbStart_Click(object sender, EventArgs e)
+        {
+            panel1.Visible = false;
+
         }
     }
 }
