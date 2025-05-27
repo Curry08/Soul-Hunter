@@ -47,7 +47,7 @@ namespace PROGETTO_GIOCO_1
         SoundPlayer MovPersonaggio = new SoundPlayer(Properties.Resources.MovimentoPersonaggio);
         SoundPlayer SuonoSparo = new SoundPlayer(Properties.Resources.Sparo);
         SoundPlayer SuonoDanno = new SoundPlayer(Properties.Resources.Danno);
-        /*SoundPlayer SuonoRicarica = new SoundPlayer(Properties.Resources.Ricarica);*/
+        SoundPlayer PremiBottone = new SoundPlayer(Properties.Resources.PressioneBottone);
         SoundPlayer SuonoGameOver = new SoundPlayer(Properties.Resources.GameOver);
 
 
@@ -78,6 +78,9 @@ namespace PROGETTO_GIOCO_1
         
         private void ptbStart_Click(object sender, EventArgs e)
         {
+
+            PremiBottone.Play();
+
             for (int i = 0; i < 5; i++)
             {
                 PictureBox nemico = new PictureBox();
@@ -111,6 +114,8 @@ namespace PROGETTO_GIOCO_1
 
         private void ptbExit_Click(object sender, EventArgs e)
         {
+            PremiBottone.Play();
+
             Application.Exit();
         }
 
@@ -120,6 +125,8 @@ namespace PROGETTO_GIOCO_1
 
             if (GameOver)
                 SuonoGameOver.Stop();
+
+            PremiBottone.Play();
 
             ptbPersonaggio.Visible = true;
             lblMunizioni.Visible = true;
@@ -181,6 +188,8 @@ namespace PROGETTO_GIOCO_1
 
             if (GameOver)
                 SuonoGameOver.Stop();
+
+            PremiBottone.Play();
 
             ptbPersonaggio.Visible = false;
             ptbRetry.Visible = false;
