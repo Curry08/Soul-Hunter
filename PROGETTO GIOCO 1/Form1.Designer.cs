@@ -44,6 +44,10 @@
             this.ptbRetry = new System.Windows.Forms.PictureBox();
             this.ptbMainMenu = new System.Windows.Forms.PictureBox();
             this.lblNomeGruppo = new System.Windows.Forms.Label();
+            this.lblVita = new System.Windows.Forms.Label();
+            this.ptbDisegnoVita = new System.Windows.Forms.PictureBox();
+            this.lblScore = new System.Windows.Forms.Label();
+            this.lblPunteggio = new System.Windows.Forms.Label();
             ((System.ComponentModel.ISupportInitialize)(this.ptbPersonaggio)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.ptbLimite)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.ptbElimina)).BeginInit();
@@ -52,6 +56,7 @@
             ((System.ComponentModel.ISupportInitialize)(this.ptbExit)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.ptbRetry)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.ptbMainMenu)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.ptbDisegnoVita)).BeginInit();
             this.SuspendLayout();
             // 
             // ptbPersonaggio
@@ -71,12 +76,12 @@
             this.lblMunizioni.AutoEllipsis = true;
             this.lblMunizioni.AutoSize = true;
             this.lblMunizioni.BackColor = System.Drawing.Color.Transparent;
-            this.lblMunizioni.Font = new System.Drawing.Font("Impact", 24.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lblMunizioni.ForeColor = System.Drawing.Color.White;
+            this.lblMunizioni.Font = new System.Drawing.Font("Impact", 18F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lblMunizioni.ForeColor = System.Drawing.Color.Transparent;
             this.lblMunizioni.Image = global::PROGETTO_GIOCO_1.Properties.Resources.SfondoMunizioni;
-            this.lblMunizioni.Location = new System.Drawing.Point(506, 31);
+            this.lblMunizioni.Location = new System.Drawing.Point(1045, 31);
             this.lblMunizioni.Name = "lblMunizioni";
-            this.lblMunizioni.Size = new System.Drawing.Size(51, 41);
+            this.lblMunizioni.Size = new System.Drawing.Size(37, 29);
             this.lblMunizioni.TabIndex = 3;
             this.lblMunizioni.Text = "15";
             this.lblMunizioni.Visible = false;
@@ -102,7 +107,7 @@
             this.lblAttesa.AutoSize = true;
             this.lblAttesa.BackColor = System.Drawing.Color.Transparent;
             this.lblAttesa.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lblAttesa.Location = new System.Drawing.Point(498, 9);
+            this.lblAttesa.Location = new System.Drawing.Point(1034, 9);
             this.lblAttesa.Name = "lblAttesa";
             this.lblAttesa.Size = new System.Drawing.Size(0, 16);
             this.lblAttesa.TabIndex = 5;
@@ -146,7 +151,7 @@
             // 
             this.ptbTitolo.BackColor = System.Drawing.Color.Transparent;
             this.ptbTitolo.Image = global::PROGETTO_GIOCO_1.Properties.Resources.TitoloGioco;
-            this.ptbTitolo.Location = new System.Drawing.Point(299, 28);
+            this.ptbTitolo.Location = new System.Drawing.Point(299, 31);
             this.ptbTitolo.Name = "ptbTitolo";
             this.ptbTitolo.Size = new System.Drawing.Size(514, 253);
             this.ptbTitolo.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
@@ -202,6 +207,55 @@
             this.lblNomeGruppo.TabIndex = 12;
             this.lblNomeGruppo.Text = "©StarPixel";
             // 
+            // lblVita
+            // 
+            this.lblVita.AutoSize = true;
+            this.lblVita.BackColor = System.Drawing.Color.Red;
+            this.lblVita.Font = new System.Drawing.Font("MS Gothic", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lblVita.ForeColor = System.Drawing.Color.Black;
+            this.lblVita.Location = new System.Drawing.Point(34, 31);
+            this.lblVita.Name = "lblVita";
+            this.lblVita.Size = new System.Drawing.Size(23, 13);
+            this.lblVita.TabIndex = 13;
+            this.lblVita.Text = "10";
+            this.lblVita.Visible = false;
+            // 
+            // ptbDisegnoVita
+            // 
+            this.ptbDisegnoVita.BackColor = System.Drawing.Color.Transparent;
+            this.ptbDisegnoVita.Image = global::PROGETTO_GIOCO_1.Properties.Resources.Vita;
+            this.ptbDisegnoVita.Location = new System.Drawing.Point(0, -2);
+            this.ptbDisegnoVita.Name = "ptbDisegnoVita";
+            this.ptbDisegnoVita.Size = new System.Drawing.Size(88, 74);
+            this.ptbDisegnoVita.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
+            this.ptbDisegnoVita.TabIndex = 14;
+            this.ptbDisegnoVita.TabStop = false;
+            this.ptbDisegnoVita.Visible = false;
+            // 
+            // lblScore
+            // 
+            this.lblScore.AutoSize = true;
+            this.lblScore.BackColor = System.Drawing.Color.Transparent;
+            this.lblScore.Font = new System.Drawing.Font("MS Gothic", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lblScore.Location = new System.Drawing.Point(519, 9);
+            this.lblScore.Name = "lblScore";
+            this.lblScore.Size = new System.Drawing.Size(55, 13);
+            this.lblScore.TabIndex = 15;
+            this.lblScore.Text = "SCORE:";
+            this.lblScore.Visible = false;
+            // 
+            // lblPunteggio
+            // 
+            this.lblPunteggio.AutoSize = true;
+            this.lblPunteggio.BackColor = System.Drawing.Color.Transparent;
+            this.lblPunteggio.Font = new System.Drawing.Font("MS Gothic", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lblPunteggio.Location = new System.Drawing.Point(538, 31);
+            this.lblPunteggio.Name = "lblPunteggio";
+            this.lblPunteggio.Size = new System.Drawing.Size(12, 12);
+            this.lblPunteggio.TabIndex = 16;
+            this.lblPunteggio.Text = "0";
+            this.lblPunteggio.Visible = false;
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -210,6 +264,10 @@
             this.BackgroundImage = global::PROGETTO_GIOCO_1.Properties.Resources.SfondoImmagine;
             this.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Center;
             this.ClientSize = new System.Drawing.Size(1112, 461);
+            this.Controls.Add(this.lblPunteggio);
+            this.Controls.Add(this.lblScore);
+            this.Controls.Add(this.lblVita);
+            this.Controls.Add(this.ptbDisegnoVita);
             this.Controls.Add(this.lblNomeGruppo);
             this.Controls.Add(this.ptbMainMenu);
             this.Controls.Add(this.ptbRetry);
@@ -240,6 +298,7 @@
             ((System.ComponentModel.ISupportInitialize)(this.ptbExit)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.ptbRetry)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.ptbMainMenu)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.ptbDisegnoVita)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -261,6 +320,10 @@
         private System.Windows.Forms.PictureBox ptbRetry;
         private System.Windows.Forms.PictureBox ptbMainMenu;
         private System.Windows.Forms.Label lblNomeGruppo;
+        private System.Windows.Forms.Label lblVita;
+        private System.Windows.Forms.PictureBox ptbDisegnoVita;
+        private System.Windows.Forms.Label lblScore;
+        private System.Windows.Forms.Label lblPunteggio;
     }
 }
 

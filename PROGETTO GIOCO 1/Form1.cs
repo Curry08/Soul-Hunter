@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Drawing;
 using System.Media;
+using System.Runtime.CompilerServices;
 using System.Windows.Forms;
 
 namespace PROGETTO_GIOCO_1
@@ -31,6 +32,7 @@ namespace PROGETTO_GIOCO_1
         Random mostricasuali = new Random(100);
 
         int VitaPersonaggio = 10;
+        int Punteggio = 0;
         int VelocitàPersonaggio = 5;
         int VelocitàNemico = 6;
         int Munizioni = 15;
@@ -38,6 +40,7 @@ namespace PROGETTO_GIOCO_1
         int ContaRicarica = 3;
         int ContaNemiciRimasti = 5;
         int LabelAttesaLocation = 0;
+        int LabelVitaLocation = 0;
 
         int PosizioneNemicoX = 0;
         int PosizioneNemicoY = 0;
@@ -72,6 +75,7 @@ namespace PROGETTO_GIOCO_1
             this.Icon = Properties.Resources.IconaSoulHunter;
 
             LabelAttesaLocation = lblMunizioni.Left;
+            LabelVitaLocation = lblVita.Left;
             PosizioneNemicoX = this.ClientSize.Width + 60;
             PosizioneNemicoY = this.ClientSize.Height - 60;
         }
@@ -115,6 +119,12 @@ namespace PROGETTO_GIOCO_1
 
             ptbPersonaggio.Visible = true;
             lblMunizioni.Visible = true;
+            ptbDisegnoVita.Visible = true;
+            lblScore.Visible = true;
+            lblPunteggio.Visible = true;
+            lblVita.Visible = true;
+            lblVita.Text = VitaPersonaggio.ToString();
+            lblVita.BringToFront();
         }
 
 
@@ -135,6 +145,11 @@ namespace PROGETTO_GIOCO_1
 
             ptbPersonaggio.Visible = true;
             lblMunizioni.Visible = true;
+            lblPunteggio.Visible = true;
+            lblScore.Visible = true;
+            ptbDisegnoVita.Visible = true;
+            lblVita.Visible = true;
+            lblVita.BringToFront();
 
             ptbRetry.Visible = false;
             ptbMainMenu.Visible = false;
@@ -177,6 +192,8 @@ namespace PROGETTO_GIOCO_1
             lblMunizioni.Text = Munizioni.ToString();
 
             VitaPersonaggio = 10;
+            lblVita.Left = LabelVitaLocation;
+            lblVita.Text = VitaPersonaggio.ToString();
 
             this.BackgroundImage = Properties.Resources.Sfondo;
             this.Invalidate();
@@ -197,6 +214,10 @@ namespace PROGETTO_GIOCO_1
             ptbPersonaggio.Visible = false;
             ptbRetry.Visible = false;
             ptbMainMenu.Visible = false;
+            lblScore.Visible = false;
+            lblPunteggio.Visible = false;
+            ptbDisegnoVita.Visible = false;
+            lblVita.Visible = false;
 
             Munizioni = 15;
             lblMunizioni.Text = Munizioni.ToString();
@@ -303,6 +324,10 @@ namespace PROGETTO_GIOCO_1
                     ptbPersonaggio.Visible = false;
                     lblMunizioni.Visible = false;
                     lblAttesa.Visible = false;
+                    lblScore.Visible = false;
+                    lblPunteggio.Visible = false;
+                    ptbDisegnoVita.Visible = false;
+                    lblVita.Visible = false;
 
                     ptbRetry.Visible = true;
                     ptbMainMenu.Visible = true;
@@ -429,6 +454,14 @@ namespace PROGETTO_GIOCO_1
                         {
                             nemico.Visible = false;
 
+                            if (nemico.Image == Properties.Resources.Zombie)
+                                Punteggio += 50;
+                            else
+                                Punteggio += 100;
+
+                            lblPunteggio.Text = Punteggio.ToString();
+                            lblPunteggio.Left = lblScore.Left + lblScore.Width / 2 - lblPunteggio.Width / 2;
+
                             this.Controls.Remove(Colpi[j]);
                             Colpi[j].Dispose();
                             Colpi.RemoveAt(j);
@@ -463,6 +496,8 @@ namespace PROGETTO_GIOCO_1
                     {
                         nemico.Visible = false;
                         VitaPersonaggio--;
+                        lblVita.Left = ptbDisegnoVita.Left + ptbDisegnoVita.Width / 2 - lblVita.Width / 2;
+                        lblVita.Text = VitaPersonaggio.ToString();
                         ContaNemiciRimasti--;
                         SuonoDanno.Play();
                     }
@@ -476,11 +511,21 @@ namespace PROGETTO_GIOCO_1
                         lblMunizioni.Text = Munizioni.ToString();
                         lblMunizioni.Visible = false;
 
+                        ptbDisegnoVita.Visible = false;
+                        lblVita.Text = "0";
+                        lblVita.Visible = false;
+
+                        lblScore.Visible = false;
+                        Punteggio = 0;
+                        lblPunteggio.Text = Punteggio.ToString();
+                        lblPunteggio.Visible = false;
+
+
                         try
                         {
                             for (int i = 0; i < Nemici.Count; i++)
                             {
-                                nemico.Visible = false;
+                                Nemici[i].Visible = false;
                             }
 
                             for (int j = 0; j < Colpi.Count; j++)
