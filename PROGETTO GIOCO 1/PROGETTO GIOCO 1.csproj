@@ -165,5 +165,8 @@
   <ItemGroup>
     <None Include="Resources\PressioneBottone.wav" />
   </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Zombie.png" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

@@ -26,8 +26,9 @@ namespace PROGETTO_GIOCO_1
         bool staRicaricando = false;
         bool haSparato = false;
         bool GameOver = false;
-
         bool suonoPassiInRiproduzione = false;
+
+        Random mostricasuali = new Random(100);
 
         int VitaPersonaggio = 10;
         int VelocitàPersonaggio = 5;
@@ -86,7 +87,12 @@ namespace PROGETTO_GIOCO_1
                 nemico.Size = new Size(55, 55);
 
                 nemico.BackColor = Color.Transparent;
-                nemico.Image = Properties.Resources.Fantasma;
+
+                if (mostricasuali.Next(100) < 50 && mostricasuali.Next(100) > 25 || mostricasuali.Next(100) > 82)
+                    nemico.Image = Properties.Resources.Zombie;
+                else
+                    nemico.Image = Properties.Resources.Fantasma;
+
                 nemico.SizeMode = PictureBoxSizeMode.Zoom;
 
                 nemico.Location = new Point(PosizioneNemicoX, PosizioneNemicoY);
@@ -605,7 +611,12 @@ namespace PROGETTO_GIOCO_1
                     PictureBox nemico = new PictureBox();
                     nemico.Size = new Size(55, 55);
                     nemico.BackColor = Color.Transparent;
-                    nemico.Image = Properties.Resources.Fantasma;
+
+                    if (mostricasuali.Next(100) < 50 && mostricasuali.Next(100) > 25 || mostricasuali.Next(100) > 82)
+                        nemico.Image = Properties.Resources.Fantasma;
+                    else
+                        nemico.Image = Properties.Resources.Zombie;
+
                     nemico.SizeMode = PictureBoxSizeMode.Zoom;
                     nemico.Location = new Point(PosizioneNemicoX, PosizioneNemicoY);
                     PosizioneNemicoY -= 60;
