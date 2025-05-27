@@ -12,11 +12,12 @@ namespace PROGETTO_GIOCO_1
         public Form1()
         {
             InitializeComponent();
-            this.SetStyle(ControlStyles.DoubleBuffer |
-                  ControlStyles.UserPaint |
-                  ControlStyles.AllPaintingInWmPaint, true);
-
+            this.DoubleBuffered = true;
+            this.SetStyle(ControlStyles.OptimizedDoubleBuffer, true);
+            this.SetStyle(ControlStyles.AllPaintingInWmPaint, true);
+            this.SetStyle(ControlStyles.UserPaint, true);
             this.UpdateStyles();
+            //Soluzione per diminuire il lag della del gioco
         }
 
         bool GiocoIniziato = false;
@@ -34,7 +35,7 @@ namespace PROGETTO_GIOCO_1
         int VitaPersonaggio = 10;
         int Punteggio = 0;
         int VelocitàPersonaggio = 5;
-        int VelocitàNemico = 6;
+        int VelocitàNemico = 8;
         int Munizioni = 15;
         int VelocitàColpo = 10;
         int ContaRicarica = 3;
@@ -67,12 +68,13 @@ namespace PROGETTO_GIOCO_1
                 tmrMainGameEvents.Enabled = true;
                 tmrMovimentoNemico.Enabled = true;
             }
+            //if per far si che il gioco si stoppi quando la finestra viene minimizzata
         }
 
 
         private void Form1_Load(object sender, EventArgs e)
         {
-            this.Icon = Properties.Resources.IconaSoulHunter;
+            this.Icon = Properties.Resources.IconaSoulHunter; //Assegna l'icona alla form
 
             LabelAttesaLocation = lblMunizioni.Left;
             LabelVitaLocation = lblVita.Left;
@@ -130,16 +132,16 @@ namespace PROGETTO_GIOCO_1
 
         private void ptbExit_Click(object sender, EventArgs e)
         {
-            BottonePremuto.Play();
+            BottonePremuto.Play(); //fa partire il suono del bottone premuto
 
-            Application.Exit();
+            Application.Exit(); //chiude l'applicazione
         }
 
 
         private void ptbRetry_Click(object sender, EventArgs e)
         {
             if (GameOver)
-                SuonoGameOver.Stop();
+                SuonoGameOver.Stop();// ferma il suono del game over
 
             BottonePremuto.Play();
 
@@ -273,6 +275,7 @@ namespace PROGETTO_GIOCO_1
         {
             if (GameOver || !GiocoIniziato || GiocoInPausa)
                 return;
+            //if per controllare se il gioco è in pausa o se è finito, altrimenti esegue il codice sotto
 
             if (e.KeyCode == Keys.W || e.KeyCode == Keys.Up)
                 vaSu = true;
@@ -306,7 +309,7 @@ namespace PROGETTO_GIOCO_1
         {
             if (GameOver || !GiocoIniziato)
                 return;
-
+            // if per controllare se il gioco è finito o se non è iniziato, altrimenti esegue il codice sotto
             if (e.KeyCode == Keys.Escape)
             {
                 if (!GiocoInPausa)
@@ -362,6 +365,7 @@ namespace PROGETTO_GIOCO_1
                     GiocoInPausa = false;
                 }
             }
+            //if per mettere in pausa il gioco quando si preme il tasto esc
 
             if (GiocoInPausa)
                 return;
@@ -407,6 +411,7 @@ namespace PROGETTO_GIOCO_1
         {
             if (GameOver || !GiocoIniziato || GiocoInPausa)
                 return;
+            // if per controllare se il gioco è in pausa o se è finito, altrimenti esegue il codice sotto
 
             if (vaSu)
                 ptbPersonaggio.Top = Math.Max(ptbLimite.Height, ptbPersonaggio.Top - VelocitàPersonaggio);
@@ -661,16 +666,19 @@ namespace PROGETTO_GIOCO_1
                         nemico.Image = Properties.Resources.Zombie;
                     else
                         nemico.Image = Properties.Resources.Fantasma;
+                    //immagine del nemico che viene generato assegnata in base al numero casuale
 
                     nemico.SizeMode = PictureBoxSizeMode.Zoom;
                     nemico.Location = new Point(PosizioneNemicoX, PosizioneNemicoY);
                     PosizioneNemicoY -= 60;
-
+                    
+                    
                     if (PosizioneNemicoY < ptbLimite.Bottom)
                     {
                         PosizioneNemicoX += 60;
                         PosizioneNemicoY = this.ClientSize.Height - 60;
                     }
+                    //if per far si che i nemici non escano dallo schermo
 
                     this.Controls.Add(nemico);
                     Nemici.Add(nemico);
