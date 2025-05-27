@@ -47,7 +47,7 @@ namespace PROGETTO_GIOCO_1
         SoundPlayer MovPersonaggio = new SoundPlayer(Properties.Resources.MovimentoPersonaggio);
         SoundPlayer SuonoSparo = new SoundPlayer(Properties.Resources.Sparo);
         SoundPlayer SuonoDanno = new SoundPlayer(Properties.Resources.Danno);
-        SoundPlayer PremiBottone = new SoundPlayer(Properties.Resources.PressioneBottone);
+        SoundPlayer BottonePremuto = new SoundPlayer(Properties.Resources.PressioneBottone);
         SoundPlayer SuonoGameOver = new SoundPlayer(Properties.Resources.GameOver);
 
 
@@ -78,8 +78,7 @@ namespace PROGETTO_GIOCO_1
         
         private void ptbStart_Click(object sender, EventArgs e)
         {
-
-            PremiBottone.Play();
+            BottonePremuto.Play();
 
             for (int i = 0; i < 5; i++)
             {
@@ -99,6 +98,7 @@ namespace PROGETTO_GIOCO_1
             }
 
             GiocoIniziato = true;
+            lblNomeGruppo.Visible = false;
             ptbTitolo.Visible = false;
             ptbStart.Visible = false;
             ptbExit.Visible = false;
@@ -114,7 +114,7 @@ namespace PROGETTO_GIOCO_1
 
         private void ptbExit_Click(object sender, EventArgs e)
         {
-            PremiBottone.Play();
+            BottonePremuto.Play();
 
             Application.Exit();
         }
@@ -122,11 +122,10 @@ namespace PROGETTO_GIOCO_1
 
         private void ptbRetry_Click(object sender, EventArgs e)
         {
-
             if (GameOver)
                 SuonoGameOver.Stop();
 
-            PremiBottone.Play();
+            BottonePremuto.Play();
 
             ptbPersonaggio.Visible = true;
             lblMunizioni.Visible = true;
@@ -176,7 +175,6 @@ namespace PROGETTO_GIOCO_1
             this.BackgroundImage = Properties.Resources.Sfondo;
             this.Invalidate();
 
-
             GiocoIniziato = true;
             GiocoInPausa = false;
             GameOver = false;
@@ -185,11 +183,10 @@ namespace PROGETTO_GIOCO_1
         
         private void ptbMainMenu_Click(object sender, EventArgs e)
         {
-
             if (GameOver)
                 SuonoGameOver.Stop();
 
-            PremiBottone.Play();
+            BottonePremuto.Play();
 
             ptbPersonaggio.Visible = false;
             ptbRetry.Visible = false;
@@ -237,6 +234,7 @@ namespace PROGETTO_GIOCO_1
             ptbTitolo.Visible = true;
             ptbStart.Visible = true;
             ptbExit.Visible = true;
+            lblNomeGruppo.Visible = true;
 
             GameOver = false;
             GiocoInPausa = false;
@@ -417,13 +415,13 @@ namespace PROGETTO_GIOCO_1
 
                 }
 
-                for (int i = 0; i < Nemici.Count; i++)
+                foreach (PictureBox nemico in Nemici)
                 {
                     for (int j = 0; j < Colpi.Count; j++)
                     {
-                        if (Nemici[i].Bounds.IntersectsWith(Colpi[j].Bounds) && Nemici[i].Visible)
+                        if (nemico.Bounds.IntersectsWith(Colpi[j].Bounds) && nemico.Visible)
                         {
-                            Nemici[i].Visible = false;
+                            nemico.Visible = false;
 
                             this.Controls.Remove(Colpi[j]);
                             Colpi[j].Dispose();
@@ -447,22 +445,22 @@ namespace PROGETTO_GIOCO_1
             if (GameOver || !GiocoIniziato || GiocoInPausa)
                 return;
 
-            for (int i = 0; i < Nemici.Count; i++)
+            foreach (PictureBox nemico in Nemici)
             {
-                if (Nemici[i].Visible)
+                if (nemico.Visible)
                 {
 
-                    Nemici[i].Left -= VelocitàNemico;
+                    nemico.Left -= VelocitàNemico;
 
 
-                    if (Nemici[i].Bounds.IntersectsWith(ptbElimina.Bounds))
+                    if (nemico.Bounds.IntersectsWith(ptbElimina.Bounds))
                     {
-                        Nemici[i].Visible = false;
+                        nemico.Visible = false;
                         VitaPersonaggio--;
                         ContaNemiciRimasti--;
                         SuonoDanno.Play();
                     }
-                    else Nemici[i].Refresh();
+                    else nemico.Refresh();
 
                     if (VitaPersonaggio == 0 && !GameOver)
                     {
@@ -474,9 +472,9 @@ namespace PROGETTO_GIOCO_1
 
                         try
                         {
-                            for (int j = 0; j < Nemici.Count; j++)
+                            for (int i = 0; i < Nemici.Count; i++)
                             {
-                                Nemici[j].Visible = false;
+                                nemico.Visible = false;
                             }
 
                             for (int j = 0; j < Colpi.Count; j++)

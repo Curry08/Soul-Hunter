@@ -43,6 +43,7 @@
             this.ptbExit = new System.Windows.Forms.PictureBox();
             this.ptbRetry = new System.Windows.Forms.PictureBox();
             this.ptbMainMenu = new System.Windows.Forms.PictureBox();
+            this.lblNomeGruppo = new System.Windows.Forms.Label();
             ((System.ComponentModel.ISupportInitialize)(this.ptbPersonaggio)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.ptbLimite)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.ptbElimina)).BeginInit();
@@ -190,6 +191,17 @@
             this.ptbMainMenu.Visible = false;
             this.ptbMainMenu.Click += new System.EventHandler(this.ptbMainMenu_Click);
             // 
+            // lblNomeGruppo
+            // 
+            this.lblNomeGruppo.AutoSize = true;
+            this.lblNomeGruppo.BackColor = System.Drawing.Color.Transparent;
+            this.lblNomeGruppo.Font = new System.Drawing.Font("MS Gothic", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lblNomeGruppo.Location = new System.Drawing.Point(8, 441);
+            this.lblNomeGruppo.Name = "lblNomeGruppo";
+            this.lblNomeGruppo.Size = new System.Drawing.Size(65, 11);
+            this.lblNomeGruppo.TabIndex = 12;
+            this.lblNomeGruppo.Text = "©StarPixel";
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -198,6 +210,7 @@
             this.BackgroundImage = global::PROGETTO_GIOCO_1.Properties.Resources.SfondoImmagine;
             this.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Center;
             this.ClientSize = new System.Drawing.Size(1112, 461);
+            this.Controls.Add(this.lblNomeGruppo);
             this.Controls.Add(this.ptbMainMenu);
             this.Controls.Add(this.ptbRetry);
             this.Controls.Add(this.ptbExit);
@@ -247,6 +260,7 @@
         private System.Windows.Forms.PictureBox ptbExit;
         private System.Windows.Forms.PictureBox ptbRetry;
         private System.Windows.Forms.PictureBox ptbMainMenu;
+        private System.Windows.Forms.Label lblNomeGruppo;
     }
 }
 
