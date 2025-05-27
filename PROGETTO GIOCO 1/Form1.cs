@@ -34,7 +34,7 @@ namespace PROGETTO_GIOCO_1
         int VitaPersonaggio = 10;
         int Punteggio = 0;
         int VelocitàPersonaggio = 5;
-        int VelocitàNemico = 6;
+        int VelocitàNemico = 8;
         int Munizioni = 15;
         int VelocitàColpo = 10;
         int ContaRicarica = 3;
