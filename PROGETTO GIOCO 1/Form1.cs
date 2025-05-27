@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Drawing;
+using System.Media;
 using System.Windows.Forms;
 
 namespace PROGETTO_GIOCO_1
@@ -10,10 +11,10 @@ namespace PROGETTO_GIOCO_1
         public Form1()
         {
             InitializeComponent();
-            this.DoubleBuffered = true;
-            this.SetStyle(ControlStyles.OptimizedDoubleBuffer, true);
-            this.SetStyle(ControlStyles.AllPaintingInWmPaint, true);
-            this.SetStyle(ControlStyles.UserPaint, true);
+            this.SetStyle(ControlStyles.DoubleBuffer |
+                  ControlStyles.UserPaint |
+                  ControlStyles.AllPaintingInWmPaint, true);
+
             this.UpdateStyles();
         }
 
@@ -26,21 +27,30 @@ namespace PROGETTO_GIOCO_1
         bool haSparato = false;
         bool GameOver = false;
 
+        bool suonoPassiInRiproduzione = false;
+
         int VitaPersonaggio = 10;
         int VelocitàPersonaggio = 5;
-        int VelocitàNemico = 15;
+        int VelocitàNemico = 6;
         int Munizioni = 15;
         int VelocitàColpo = 10;
-        int ContaRicarica = 5;
+        int ContaRicarica = 3;
         int ContaNemiciRimasti = 5;
-        int LabelAttesaLocation = 0;       
+        int LabelAttesaLocation = 0;
 
-        Random GenNemici = new Random();
+        int PosizioneNemicoX = 0;
+        int PosizioneNemicoY = 0;
 
         List<Label> Colpi = new List<Label>();
         List<PictureBox> Nemici = new List<PictureBox>();
-       
-        
+
+        SoundPlayer MovPersonaggio = new SoundPlayer(Properties.Resources.MovimentoPersonaggio);
+        SoundPlayer SuonoSparo = new SoundPlayer(Properties.Resources.Sparo);
+        SoundPlayer SuonoDanno = new SoundPlayer(Properties.Resources.Danno);
+        /*SoundPlayer SuonoRicarica = new SoundPlayer(Properties.Resources.Ricarica);*/
+        SoundPlayer SuonoGameOver = new SoundPlayer(Properties.Resources.GameOver);
+
+
         private void Form1_Resize_1(object sender, EventArgs e)
         {
             if (this.WindowState == FormWindowState.Minimized)
@@ -58,7 +68,11 @@ namespace PROGETTO_GIOCO_1
 
         private void Form1_Load(object sender, EventArgs e)
         {
+            this.Icon = Properties.Resources.IconaSoulHunter;
+
             LabelAttesaLocation = lblMunizioni.Left;
+            PosizioneNemicoX = this.ClientSize.Width + 60;
+            PosizioneNemicoY = this.ClientSize.Height - 60;
         }
         
         
@@ -67,13 +81,15 @@ namespace PROGETTO_GIOCO_1
             for (int i = 0; i < 5; i++)
             {
                 PictureBox nemico = new PictureBox();
-                nemico.Size = new Size(60, 60);
+                nemico.Size = new Size(55, 55);
 
                 nemico.BackColor = Color.Transparent;
                 nemico.Image = Properties.Resources.Fantasma;
                 nemico.SizeMode = PictureBoxSizeMode.Zoom;
 
-                nemico.Location = new Point(GenNemici.Next(this.ClientSize.Width + nemico.Width, this.ClientSize.Width + 80), GenNemici.Next(ptbLimite.Height, this.ClientSize.Height - nemico.Height));
+                nemico.Location = new Point(PosizioneNemicoX, PosizioneNemicoY);
+
+                PosizioneNemicoY -= 60;
 
                 this.Controls.Add(nemico);
                 Nemici.Add(nemico);
@@ -86,7 +102,7 @@ namespace PROGETTO_GIOCO_1
 
             this.BackgroundImage = Properties.Resources.Sfondo;
             this.BackgroundImageLayout = ImageLayout.Stretch;
-            this.Refresh();
+            this.Invalidate();
 
             ptbPersonaggio.Visible = true;
             lblMunizioni.Visible = true;
@@ -97,10 +113,14 @@ namespace PROGETTO_GIOCO_1
         {
             Application.Exit();
         }
-        
-        
+
+
         private void ptbRetry_Click(object sender, EventArgs e)
         {
+
+            if (GameOver)
+                SuonoGameOver.Stop();
+
             ptbPersonaggio.Visible = true;
             lblMunizioni.Visible = true;
 
@@ -114,6 +134,23 @@ namespace PROGETTO_GIOCO_1
                     this.Controls.Remove(Colpi[i]);
                     Colpi[i].Dispose();
                     Colpi.RemoveAt(i);
+                    i--;
+                }
+
+                if (Nemici.Count > 5)
+                {
+                    for (int i = 5; i < Nemici.Count; i++)
+                    {
+                        this.Controls.Remove(Nemici[i]);
+                        Nemici[i].Dispose();
+                        Nemici.RemoveAt(i);
+                        i--;
+                    }
+                }
+
+                for (int i = 0; i < 5; i++)
+                {
+                    Nemici[i].Visible = true;
                 }
             }
             catch (ArgumentOutOfRangeException)
@@ -127,15 +164,24 @@ namespace PROGETTO_GIOCO_1
             Munizioni = 15;
             lblMunizioni.Text = Munizioni.ToString();
 
-            this.BackgroundImage = Properties.Resources.Sfondo;
-            this.Refresh();
+            VitaPersonaggio = 10;
 
+            this.BackgroundImage = Properties.Resources.Sfondo;
+            this.Invalidate();
+
+
+            GiocoIniziato = true;
             GiocoInPausa = false;
+            GameOver = false;
         }
         
         
         private void ptbMainMenu_Click(object sender, EventArgs e)
         {
+
+            if (GameOver)
+                SuonoGameOver.Stop();
+
             ptbPersonaggio.Visible = false;
             ptbRetry.Visible = false;
             ptbMainMenu.Visible = false;
@@ -151,13 +197,23 @@ namespace PROGETTO_GIOCO_1
                     this.Controls.Remove(Colpi[i]);
                     Colpi[i].Dispose();
                     Colpi.RemoveAt(i);
+                    i--;
                 }
 
-                for (int i = 0; i < Nemici.Count; i++)
+                if (Nemici.Count > 5)
                 {
-                    this.Controls.Remove(Colpi[i]);
-                    Colpi[i].Dispose();
-                    Colpi.RemoveAt(i);
+                    for (int i = 5; i < Nemici.Count; i++)
+                    {
+                        this.Controls.Remove(Nemici[i]);
+                        Nemici[i].Dispose();
+                        Nemici.RemoveAt(i);
+                        i--;
+                    }
+                }
+
+                for (int i = 0; i < 5; i++)
+                {
+                    Nemici[i].Visible = false;
                 }
             }
             catch (ArgumentOutOfRangeException)
@@ -167,12 +223,13 @@ namespace PROGETTO_GIOCO_1
 
             this.BackgroundImage = Properties.Resources.SfondoImmagine;
             this.BackgroundImageLayout = ImageLayout.Center;
-            this.Refresh();
+            this.Invalidate();
 
             ptbTitolo.Visible = true;
             ptbStart.Visible = true;
             ptbExit.Visible = true;
 
+            GameOver = false;
             GiocoInPausa = false;
             GiocoIniziato = false;
         }
@@ -203,12 +260,14 @@ namespace PROGETTO_GIOCO_1
                     staSparando = true;
                     if (!haSparato)
                         haSparato = true;
+
+                    SuonoSparo.Play();
                     CreazioneColpoEAvvioSparo();
                 }
             }
         }
-        
-        
+
+
         private void Form1_KeyUp(object sender, KeyEventArgs e)
         {
             if (GameOver || !GiocoIniziato)
@@ -236,7 +295,7 @@ namespace PROGETTO_GIOCO_1
                     ptbMainMenu.Visible = true;
 
                     this.BackgroundImage = Properties.Resources.SfondoPausa;
-                    this.Refresh();
+                    this.Invalidate();
 
                     GiocoInPausa = true;
                 }
@@ -246,7 +305,7 @@ namespace PROGETTO_GIOCO_1
                     ptbMainMenu.Visible = false;
 
                     this.BackgroundImage = Properties.Resources.Sfondo;
-                    this.Refresh();
+                    this.Invalidate();
 
                     foreach (Label colpo in Colpi)
                     {
@@ -297,6 +356,8 @@ namespace PROGETTO_GIOCO_1
                         staSparando = true;
                         if (!haSparato)
                             haSparato = true;
+
+                        SuonoSparo.Play();
                         CreazioneColpoEAvvioSparo();
                     }
                 }
@@ -310,17 +371,28 @@ namespace PROGETTO_GIOCO_1
                 return;
 
             if (vaSu)
-            {
                 ptbPersonaggio.Top = Math.Max(ptbLimite.Height, ptbPersonaggio.Top - VelocitàPersonaggio);
-                ptbPersonaggio.Refresh();
+           
+           if (vaGiù)
+                ptbPersonaggio.Top = Math.Min(this.ClientSize.Height - ptbPersonaggio.Height, ptbPersonaggio.Top + VelocitàPersonaggio);
+
+            if (vaSu || vaGiù)
+            {
+                if (!suonoPassiInRiproduzione)
+                {
+                    MovPersonaggio.PlayLooping();
+                    suonoPassiInRiproduzione = true;
+                }
+            }
+            else
+            {
+                if (suonoPassiInRiproduzione)
+                {
+                    MovPersonaggio.Stop();
+                    suonoPassiInRiproduzione = false;
+                }
             }
 
-            if (vaGiù)
-            {
-                ptbPersonaggio.Top = Math.Min(this.ClientSize.Height - ptbPersonaggio.Height, ptbPersonaggio.Top + VelocitàPersonaggio);
-                ptbPersonaggio.Refresh();
-            }
-            
             if (haSparato)
             {
                 for (int i = 0; i < Colpi.Count; i++)
@@ -349,6 +421,8 @@ namespace PROGETTO_GIOCO_1
                             Colpi.RemoveAt(j);
                             j--;
 
+                            SuonoDanno.Play();
+
                             ContaNemiciRimasti--;
 
                             break;
@@ -370,13 +444,16 @@ namespace PROGETTO_GIOCO_1
                 {
 
                     Nemici[i].Left -= VelocitàNemico;
-                    Nemici[i].Refresh();
+
+
                     if (Nemici[i].Bounds.IntersectsWith(ptbElimina.Bounds))
                     {
                         Nemici[i].Visible = false;
                         VitaPersonaggio--;
                         ContaNemiciRimasti--;
+                        SuonoDanno.Play();
                     }
+                    else Nemici[i].Refresh();
 
                     if (VitaPersonaggio == 0 && !GameOver)
                     {
@@ -388,6 +465,11 @@ namespace PROGETTO_GIOCO_1
 
                         try
                         {
+                            for (int j = 0; j < Nemici.Count; j++)
+                            {
+                                Nemici[j].Visible = false;
+                            }
+
                             for (int j = 0; j < Colpi.Count; j++)
                             {
                                 this.Controls.Remove(Colpi[j]);
@@ -395,23 +477,16 @@ namespace PROGETTO_GIOCO_1
                                 Colpi.RemoveAt(j);
                                 j--;
                             }
-
-                            for (int j = 0; j < Nemici.Count; j++)
-                            {
-                                this.Controls.Remove(Nemici[j]);
-                                Nemici[j].Dispose();
-                                Nemici.RemoveAt(j);
-                                j--;
-                            }
-
                         }
                         catch (ArgumentOutOfRangeException)
                         {
                             // NON FA NULLA
                         }
 
+                        SuonoGameOver.Play();
+
                         this.BackgroundImage = Properties.Resources.SfondoGameOver;
-                        this.Refresh();
+                        this.Invalidate();
 
                         ptbRetry.Visible = true;
                         ptbRetry.Left = this.ClientSize.Width / 2 - ptbRetry.Width / 2 + 5;
@@ -420,7 +495,7 @@ namespace PROGETTO_GIOCO_1
 
                         GiocoInPausa = false;
                         GiocoIniziato = false;
-                        
+
                         GameOver = true;
                         break;
                     }
@@ -454,7 +529,7 @@ namespace PROGETTO_GIOCO_1
 
                 Munizioni = 15;
                 lblAttesa.Text = "";
-                ContaRicarica = 5;
+                ContaRicarica = 3;
                 lblAttesa.Left = LabelAttesaLocation;
                 lblMunizioni.Text = Munizioni.ToString();
                 lblMunizioni.Refresh();
@@ -477,7 +552,7 @@ namespace PROGETTO_GIOCO_1
         private void CreazioneColpoEAvvioSparo()
         {
             Label colpo = new Label();
-            colpo.Size = new Size(30, 10);
+            colpo.Size = new Size(22, 8);
             colpo.BackColor = Color.Transparent;
             colpo.Image = Properties.Resources.Proiettili;
             colpo.ImageAlign = ContentAlignment.MiddleRight;
@@ -487,6 +562,7 @@ namespace PROGETTO_GIOCO_1
             Colpi.Add(colpo);
 
             Munizioni--;
+
             lblAttesa.Text = "Attendi...";
             this.Controls.Add(colpo);
             colpo.BringToFront();
@@ -496,10 +572,22 @@ namespace PROGETTO_GIOCO_1
 
         private void GeneraNemici()
         {
+            PosizioneNemicoX = this.ClientSize.Width + 60;
+            PosizioneNemicoY = this.ClientSize.Height - 60;
+
             foreach (PictureBox nemico in Nemici)
             {
-                nemico.Visible = true;
-                nemico.Location = new Point(GenNemici.Next(this.ClientSize.Width + nemico.Width, this.ClientSize.Width + 80), GenNemici.Next(ptbLimite.Height, this.ClientSize.Height - nemico.Height));
+                if (!nemico.Visible)
+                    nemico.Visible = true;
+
+                nemico.Location = new Point(PosizioneNemicoX, PosizioneNemicoY);
+                PosizioneNemicoY -= 60;
+
+                if (PosizioneNemicoY < ptbLimite.Bottom)
+                {
+                    PosizioneNemicoX += 60;
+                    PosizioneNemicoY = this.ClientSize.Height - 60;
+                }
             }
 
             if (ContaNemiciRimasti == 0)
@@ -508,18 +596,23 @@ namespace PROGETTO_GIOCO_1
                 for (int i = 0; i < 2; i++)
                 {
                     PictureBox nemico = new PictureBox();
-                    nemico.Size = new Size(60, 60);
+                    nemico.Size = new Size(55, 55);
                     nemico.BackColor = Color.Transparent;
                     nemico.Image = Properties.Resources.Fantasma;
                     nemico.SizeMode = PictureBoxSizeMode.Zoom;
-                    nemico.Location = new Point(GenNemici.Next(this.ClientSize.Width + nemico.Width, this.ClientSize.Width + 80), GenNemici.Next(ptbLimite.Height, this.ClientSize.Height - nemico.Height));
+                    nemico.Location = new Point(PosizioneNemicoX, PosizioneNemicoY);
+                    PosizioneNemicoY -= 60;
+
+                    if (PosizioneNemicoY < ptbLimite.Bottom)
+                    {
+                        PosizioneNemicoX += 60;
+                        PosizioneNemicoY = this.ClientSize.Height - 60;
+                    }
 
                     this.Controls.Add(nemico);
                     Nemici.Add(nemico);
                 }
             }
         }
-
-        
     }
 }

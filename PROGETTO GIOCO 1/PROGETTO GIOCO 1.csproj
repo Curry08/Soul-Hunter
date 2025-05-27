@@ -120,9 +120,6 @@
     <None Include="Resources\SfondoPausa.png" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="Resources\BottoneResume.png" />
-  </ItemGroup>
-  <ItemGroup>
     <None Include="Resources\BottoneRetry.png" />
   </ItemGroup>
   <ItemGroup>
@@ -130,6 +127,40 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="Resources\SfondoGameOver.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\IconaSoulHunter.ico.ico" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\MovimentoPersonaggio.wav" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Danno.wav" />
+  </ItemGroup>
+  <ItemGroup>
+    <COMReference Include="AxWMPLib">
+      <Guid>{6BF52A50-394A-11D3-B153-00C04F79FAA6}</Guid>
+      <VersionMajor>1</VersionMajor>
+      <VersionMinor>0</VersionMinor>
+      <Lcid>0</Lcid>
+      <WrapperTool>aximp</WrapperTool>
+      <Isolated>False</Isolated>
+    </COMReference>
+    <COMReference Include="WMPLib">
+      <Guid>{6BF52A50-394A-11D3-B153-00C04F79FAA6}</Guid>
+      <VersionMajor>1</VersionMajor>
+      <VersionMinor>0</VersionMinor>
+      <Lcid>0</Lcid>
+      <WrapperTool>tlbimp</WrapperTool>
+      <Isolated>False</Isolated>
+      <EmbedInteropTypes>True</EmbedInteropTypes>
+    </COMReference>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Sparo.wav" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\GameOver.wav" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

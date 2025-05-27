@@ -83,16 +83,6 @@ namespace PROGETTO_GIOCO_1.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
-        internal static System.Drawing.Bitmap BottoneResume {
-            get {
-                object obj = ResourceManager.GetObject("BottoneResume", resourceCulture);
-                return ((System.Drawing.Bitmap)(obj));
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized resource of type System.Drawing.Bitmap.
-        /// </summary>
         internal static System.Drawing.Bitmap BottoneRetry {
             get {
                 object obj = ResourceManager.GetObject("BottoneRetry", resourceCulture);
@@ -111,12 +101,49 @@ namespace PROGETTO_GIOCO_1.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized resource of type System.IO.UnmanagedMemoryStream similar to System.IO.MemoryStream.
+        /// </summary>
+        internal static System.IO.UnmanagedMemoryStream Danno {
+            get {
+                return ResourceManager.GetStream("Danno", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
         internal static System.Drawing.Bitmap Fantasma {
             get {
                 object obj = ResourceManager.GetObject("Fantasma", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.IO.UnmanagedMemoryStream similar to System.IO.MemoryStream.
+        /// </summary>
+        internal static System.IO.UnmanagedMemoryStream GameOver {
+            get {
+                return ResourceManager.GetStream("GameOver", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Icon similar to (Icon).
+        /// </summary>
+        internal static System.Drawing.Icon IconaSoulHunter {
+            get {
+                object obj = ResourceManager.GetObject("IconaSoulHunter", resourceCulture);
+                return ((System.Drawing.Icon)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.IO.UnmanagedMemoryStream similar to System.IO.MemoryStream.
+        /// </summary>
+        internal static System.IO.UnmanagedMemoryStream MovimentoPersonaggio {
+            get {
+                return ResourceManager.GetStream("MovimentoPersonaggio", resourceCulture);
             }
         }
         
@@ -197,6 +224,15 @@ namespace PROGETTO_GIOCO_1.Properties {
             get {
                 object obj = ResourceManager.GetObject("SfondoPausa", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.IO.UnmanagedMemoryStream similar to System.IO.MemoryStream.
+        /// </summary>
+        internal static System.IO.UnmanagedMemoryStream Sparo {
+            get {
+                return ResourceManager.GetStream("Sparo", resourceCulture);
             }
         }
         

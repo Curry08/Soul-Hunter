@@ -111,7 +111,7 @@
             this.ptbLimite.BackColor = System.Drawing.Color.Transparent;
             this.ptbLimite.Location = new System.Drawing.Point(0, -2);
             this.ptbLimite.Name = "ptbLimite";
-            this.ptbLimite.Size = new System.Drawing.Size(100, 74);
+            this.ptbLimite.Size = new System.Drawing.Size(1112, 74);
             this.ptbLimite.TabIndex = 4;
             this.ptbLimite.TabStop = false;
             // 
@@ -206,13 +206,14 @@
             this.Controls.Add(this.lblAttesa);
             this.Controls.Add(this.lblMunizioni);
             this.Controls.Add(this.ptbPersonaggio);
-            this.Controls.Add(this.ptbLimite);
             this.Controls.Add(this.ptbElimina);
+            this.Controls.Add(this.ptbLimite);
             this.ForeColor = System.Drawing.Color.Transparent;
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
             this.MaximizeBox = false;
             this.Name = "Form1";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent;
+            this.Text = "Soul Hunter";
             this.Load += new System.EventHandler(this.Form1_Load);
             this.KeyDown += new System.Windows.Forms.KeyEventHandler(this.Form1_KeyDown);
             this.KeyUp += new System.Windows.Forms.KeyEventHandler(this.Form1_KeyUp);
