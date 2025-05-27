@@ -89,9 +89,9 @@ namespace PROGETTO_GIOCO_1
                 nemico.BackColor = Color.Transparent;
 
                 if (mostricasuali.Next(100) < 50 && mostricasuali.Next(100) > 25 || mostricasuali.Next(100) > 82)
-                    nemico.Image = Properties.Resources.Zombie;
-                else
                     nemico.Image = Properties.Resources.Fantasma;
+                else
+                    nemico.Image = Properties.Resources.Zombie;
 
                 nemico.SizeMode = PictureBoxSizeMode.Zoom;
 
@@ -613,9 +613,9 @@ namespace PROGETTO_GIOCO_1
                     nemico.BackColor = Color.Transparent;
 
                     if (mostricasuali.Next(100) < 50 && mostricasuali.Next(100) > 25 || mostricasuali.Next(100) > 82)
-                        nemico.Image = Properties.Resources.Fantasma;
-                    else
                         nemico.Image = Properties.Resources.Zombie;
+                    else
+                        nemico.Image = Properties.Resources.Fantasma;
 
                     nemico.SizeMode = PictureBoxSizeMode.Zoom;
                     nemico.Location = new Point(PosizioneNemicoX, PosizioneNemicoY);
