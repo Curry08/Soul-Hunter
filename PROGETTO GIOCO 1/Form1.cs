@@ -143,7 +143,12 @@ namespace PROGETTO_GIOCO_1
                     i--;
                 }
 
-                if (Nemici.Count > 5)
+                for (int i = 0; i < 5; i++)
+                {
+                    Nemici[i].Visible = true;
+                }
+
+                if (Nemici.Count >= 5)
                 {
                     for (int i = 5; i < Nemici.Count; i++)
                     {
@@ -152,11 +157,6 @@ namespace PROGETTO_GIOCO_1
                         Nemici.RemoveAt(i);
                         i--;
                     }
-                }
-
-                for (int i = 0; i < 5; i++)
-                {
-                    Nemici[i].Visible = true;
                 }
             }
             catch (ArgumentOutOfRangeException)
