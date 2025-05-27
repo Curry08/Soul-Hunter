@@ -278,7 +278,7 @@ namespace PROGETTO_GIOCO_1
             //if per controllare se il gioco è in pausa o se è finito, altrimenti esegue il codice sotto
 
             if (e.KeyCode == Keys.W || e.KeyCode == Keys.Up)
-                vaSu = true;
+                vaSu = true; 
 
             if (e.KeyCode == Keys.S || e.KeyCode == Keys.Down)
                 vaGiù = true;
