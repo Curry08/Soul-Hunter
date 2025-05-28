@@ -35,7 +35,7 @@ namespace PROGETTO_GIOCO_1
         int VitaPersonaggio = 10;
         int Punteggio = 0;
         int VelocitàPersonaggio = 5;
-        int VelocitàNemico = 8;
+        int VelocitàNemico = 6;
         int Munizioni = 15;
         int VelocitàColpo = 10;
         int ContaRicarica = 3;
@@ -200,6 +200,8 @@ namespace PROGETTO_GIOCO_1
             this.BackgroundImage = Properties.Resources.Sfondo;
             this.Invalidate();
 
+            tmrMovimentoNemico.Interval = 100;
+
             GiocoIniziato = true;
             GiocoInPausa = false;
             GameOver = false;
@@ -257,8 +259,9 @@ namespace PROGETTO_GIOCO_1
             }
 
             this.BackgroundImage = Properties.Resources.SfondoImmagine;
-            this.BackgroundImageLayout = ImageLayout.Center;
-            this.Invalidate();
+            this.BackgroundImageLayout = ImageLayout.Stretch;
+            
+            this.Invalidate();// ridisegna la form
 
             ptbTitolo.Visible = true;
             ptbStart.Visible = true;
@@ -358,6 +361,10 @@ namespace PROGETTO_GIOCO_1
                         nemico.Visible = true;
                     }
 
+                    lblScore.Visible = true;    
+                    ptbDisegnoVita.Visible = true;
+                    lblVita.Visible = true;
+                    lblPunteggio.Visible = true;
                     ptbPersonaggio.Visible = true;
                     lblMunizioni.Visible = true;
                     lblAttesa.Visible = true;
@@ -448,7 +455,7 @@ namespace PROGETTO_GIOCO_1
                         Colpi.RemoveAt(i);
                         i--;
                     }
-
+                    //if per far si che i colpi sparati una volta usciti dalla form si eliminino
                 }
 
                 foreach (PictureBox nemico in Nemici)
