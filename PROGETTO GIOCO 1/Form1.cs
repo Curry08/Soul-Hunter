@@ -35,7 +35,7 @@ namespace PROGETTO_GIOCO_1
         int VitaPersonaggio = 10;
         int Punteggio = 0;
         int VelocitàPersonaggio = 5;
-        int VelocitàNemico = 6;
+        int VelocitàNemico = 4;
         int Munizioni = 15;
         int VelocitàColpo = 10;
         int ContaRicarica = 3;
@@ -465,11 +465,8 @@ namespace PROGETTO_GIOCO_1
                         if (nemico.Bounds.IntersectsWith(Colpi[j].Bounds) && nemico.Visible)
                         {
                             nemico.Visible = false;
-
-                            if (nemico.Image == Properties.Resources.Zombie)
-                                Punteggio += 50;
-                            else
-                                Punteggio += 100;
+                            
+                            Punteggio += 50;
 
                             lblPunteggio.Text = Punteggio.ToString();
                             lblPunteggio.Left = lblScore.Left + lblScore.Width / 2 - lblPunteggio.Width / 2;
@@ -572,7 +569,7 @@ namespace PROGETTO_GIOCO_1
                 }
             }
 
-            if (ContaNemiciRimasti == 0 && Nemici.Count < 15)
+            if (ContaNemiciRimasti == 0)
             {
                 GeneraNemici();
                 tmrMovimentoNemico.Interval = Math.Max(20, tmrMovimentoNemico.Interval - 20);
